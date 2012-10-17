@@ -1,4 +1,5 @@
 package structures;
+import java.lang.Integer;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -6,50 +7,61 @@ import java.util.List;
 import java.util.Queue;
 
 import game.Board;
+import game.Movement;
+import game.Player;
+import game.Strategy;
 
 public class MinMaxTree {
 	private Node root;
+	private Strategy strategy;
 	
-	public MinMaxTree(Board board){
+	public MinMaxTree(Strategy strategy, Board board){
 		this.root = new Node(board, null);
+		this.strategy = strategy;
 	}
 	
 	private static class Node{
-		int value;
 		Board board;
-		Pair<Point, Point> move;
+		Movement bestMove;
 		
-		// TODO: Implement it with an ordered structure
 		List<Node> children;
 		
-		Node(Board board, Pair<Point, Point> move){
+		Node(Board board, Movement move){
 			this.board = board;
-			this.move = move;
+			this.bestMove = move;
 		}
 	}
 	
-	public void populate(){
-		Queue<Node> queue = new LinkedList<Node>();
-		queue.add(root);
-		
-		Boolean max = true;
-		int score;
-		
-		while (!condiciondecorte){
-			Node node = queue.poll();
-			
-			for (Pair<Board, Pair<Point, Point>> pair: node.board.generateChildren()){
-				
-				score = System.getScore(pair.getFirst());
-				if (score....){
-					node.children.add(new Node(pair.getFirst(), pair.getSecond()));
-					queue.add(node);
-				}
-			}
-			
-			max = !max;
+	private int minimax(Node node, int level){
+		if (level == 0){
+			return strategy.evaluateScore(node.board);
 		}
 		
+		Node nodeChild;
+		
+		Player player = strategy.getPlayer(level);
+		
+		int score = player.initialScore(); 
+		
+		int localScore;
+		for (Pair<Board, Movement> pair : node.board.generateChildren(player)){
+			nodeChild = new Node(pair.getFirst(), pair.getSecond());
+			localScore = minimax(nodeChild, level - 1);
+			node.children.add(nodeChild);
+			
+//			if ((level % 2 == 0 && localScore < score) || (level % 2 == 1 && localScore > score)){
+			if (player.betterScore(score, localScore)){
+				score = localScore;
+				node.bestMove = pair.getSecond();
+			}
+		}
+		
+		return score;
+	}
+	
+	public Movement getBestMove(int levels){
+		minimax(root, levels);
+		return root.bestMove;
 	}
 	
 	

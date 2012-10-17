@@ -3,7 +3,13 @@ package game;
 import java.awt.Point;
 import java.util.List;
 
-public interface Strategy {
-	public List<Board> generateBoards(Board board, Point source);
-	public boolean isValid(Board board, Point source, Point target);
+import structures.Pair;
+
+public abstract class Strategy {
+	public abstract List<Pair<Board, Movement>> generateBoards(Board board, Point source); 
+	public abstract boolean isValid(Board board, Movement move);
+	public abstract int evaluateScore(Board board);
+
+	public abstract Player getPlayer(int level);
+
 }
