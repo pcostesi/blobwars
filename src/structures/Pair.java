@@ -1,27 +1,27 @@
 package structures;
 
-class Pair<F, S>{
+public class Pair<F, S>{
 	F first;
 	S second;
 	
-	Pair(F first, S second){
+	public Pair(F first, S second){
 		this.first = first;
 		this.second = second;
 	}
 	
-	F getFirst(){
+	public F getFirst(){
 		return first;
 	}
 	
-	S getSecond(){
+	public S getSecond(){
 		return second;
 	}
 	
-	void setFirst(F first){
+	public void setFirst(F first){
 		this.first = first;
 	}
 	
-	void setSecond(S second){
+	public void setSecond(S second){
 		this.second = second;
 	}
 }

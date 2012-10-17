@@ -1,5 +1,7 @@
 package game;
 
+import structures.Pair;
+
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,12 +41,13 @@ public class Board {
 		}
 	}
 	
-	public void generateChildren(Player player){
-		List<Board> boards = new LinkedList<Board>();
+	public List<Pair<Board, Movement>> generateChildren(Player player){
+		List<Pair<Board, Movement>> children = new LinkedList<Pair<Board, Movement>>();
 		
 		for(Point source : blobs.get(player)){
-			boards.addAll(this.strategy.generateBoards(this, source));
+			children.addAll(this.strategy.generateBoards(this, source));
 		}
-		
+				
+		return children;
 	}
 }
