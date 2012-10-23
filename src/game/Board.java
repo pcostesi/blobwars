@@ -18,17 +18,57 @@ public class Board {
 
 	public Board(int width, int height){
 		this.tiles = new Tile[height][width];
-		this.blobs = new HashMap<Player, LinkedList<Point>>();
+//		this.blobs = new HashMap<Player, LinkedList<Point>>();
 		this.height = height;
 		this.width = width;
 		fillTiles();
+		
 	}
 	
+//	public void addPlayer(Player player){
+//		this.blobs.put(player, new LinkedList<Point>);
+//	}
+	
 	public Board(Tile[][] tiles, Map<Player, LinkedList<Point>> blobs){
-		this.tiles = tiles;
-		this.blobs = blobs;
+		this.tiles = tiles.clone();
+//		this.blobs = new HashMap<Player, LinkedList<Point>>(blobs);
 		this.height = tiles.length;
 		this.width = tiles[0].length;
+	}
+	
+	public int getWidth(){
+		return width;
+	}
+	
+	public int getHeight(){
+		return height;
+	}
+	
+	//ATENCION only method that modifies board
+	public void setTile(Point target, Tile tile){
+		tiles[(int) target.getY()][(int) target.getX()] = tile;
+	}
+	
+	public Board putBlob(Player player, Point target){
+		Board board = new Board(this.tiles, this.blobs);
+		
+		Blob blob = new Blob(player);
+		board.tiles[(int) target.getY()][(int) target.getX()] = blob;
+//		board.blobs.get(player).add(target);
+		return this;
+	}
+	
+	 public Board deleteBlob(Player player, Point target){
+		Board board = new Board(this.tiles, this.blobs);
+		
+		board.tiles[(int) target.getY()][(int) target.getX()] = new EmptyTile();
+		
+//		board.blobs.get(player).remove(target);
+		return this;
+	}
+	 
+	public Tile getTile(Point source){
+		return this.tiles[(int) source.getY()][(int) source.getX()];
 	}
 	
 	private void fillTiles(){

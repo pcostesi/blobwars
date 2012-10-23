@@ -5,7 +5,7 @@ import java.util.List;
 
 import structures.Pair;
 
-public abstract class Strategy {
+public interface Strategy {
 	public abstract List<Pair<Board, Movement>> generateBoards(Board board, Point source); 
 	public abstract boolean isValid(Board board, Movement move);
 	public abstract int evaluateScore(Board board);
