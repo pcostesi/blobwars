@@ -1,6 +1,6 @@
 package game;
 
-public abstract class Player {
+public interface Player {
 
 	abstract boolean betterScore(int score, int localScore);
 //		(level % 2 == 0 && localScore < score) || (level % 2 == 1 && localScore > score)
