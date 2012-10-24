@@ -11,7 +11,7 @@ public class BlobStrategy implements Strategy{
 	@Override
 	public List<Pair<Board, Movement>> generateBoards(Board board, Point source) {
 		
-		Player player = board.getTile(source).getPlayer();
+		Player player = null;
 		// devuelve board y destino, enlistados
 		List<Pair<Board, Movement>> list = new LinkedList<Pair<Board, Movement>>();
 		
@@ -45,8 +45,8 @@ public class BlobStrategy implements Strategy{
 				
 				Point target = new Point(x, y);
 				
-				if (!board.getTile(target).isEmpty()){
-					board.setTile(target, new Blob(player));
+				if (board.getTileOwner(target) == null){
+					board.setTile(target, player);
 				}
 			}
 		}
@@ -72,7 +72,7 @@ public class BlobStrategy implements Strategy{
 				
 				Point target = new Point(x, y);
 				
-				if (board.getTile(target).isEmpty()){
+				if (board.getTileOwner(target) == null){
 					if (distance(target, source) <= 1){
 						list.add(adyacentMove(board, player, source, target));
 					} else {
@@ -99,14 +99,11 @@ public class BlobStrategy implements Strategy{
 		// TODO Auto-generated method stub
 		Point source = move.source;
 		Point target = move.target;
-		Tile sourceTile;
-		Tile targetTile;
 		if (source == target || distance(source, target) > 2){
 			return false;
 		}
-		sourceTile = board.getTile(source);
-		targetTile = board.getTile(target);
-		if (sourceTile.isEmpty() || !targetTile.isEmpty()){
+		if (board.getTileOwner(source) == null || 
+				board.getTileOwner(target) != null){
 			return false;
 		}
 		return true;
@@ -118,10 +115,5 @@ public class BlobStrategy implements Strategy{
 		return 5;
 	}
 
-	@Override
-	public Player getPlayer(int level) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

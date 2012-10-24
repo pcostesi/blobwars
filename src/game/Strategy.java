@@ -10,6 +10,5 @@ public interface Strategy {
 	public abstract boolean isValid(Board board, Movement move);
 	public abstract int evaluateScore(Board board);
 
-	public abstract Player getPlayer(int level);
 
 }

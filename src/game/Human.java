@@ -5,7 +5,7 @@ public class Human implements Player{
 	@Override
 	public boolean betterScore(int score, int localScore) {
 		// TODO Auto-generated method stub
-		return false;
+		return localScore < score;
 	}
 
 	@Override
@@ -16,6 +16,12 @@ public class Human implements Player{
 
 	
 	public String toString(){
-		return "O";
+		return "h";
+	}
+
+	@Override
+	public char toTile() {
+		// TODO Auto-generated method stub
+		return 'h';
 	}
 }

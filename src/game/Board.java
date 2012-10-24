@@ -8,20 +8,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Board {
-	protected static int width ;
-	protected static int height;
-	protected static Strategy strategy; 
+	protected static final int SIZE = 8;
+	private Strategy strategy; 
 	
-	Tile[][] tiles;
-	private Map<Player, LinkedList<Point>> blobs;
+	char[] tiles;
+	private Map<Player, List<Point>> blobs;
 
-	public Board(int width, int height){
-		this.tiles = new Tile[height][width];
-//		this.blobs = new HashMap<Player, LinkedList<Point>>();
-		this.height = height;
-		this.width = width;
+	public Board(){
+		this.tiles = new char[SIZE * SIZE];
 		fillTiles();
 		
 	}
@@ -30,58 +27,66 @@ public class Board {
 //		this.blobs.put(player, new LinkedList<Point>);
 //	}
 	
-	public Board(Tile[][] tiles, Map<Player, LinkedList<Point>> blobs){
-		this.tiles = Arrays.copyOf(tiles, tiles.length);
-		for (int i = 0; i < Board.height; i++){
-			this.tiles[i] = Arrays.copyOf(tiles[i], tiles[i].length); //tiles[i].clone();	
+	public Board(Board other){
+		this.tiles = Arrays.copyOf(other.tiles, SIZE * SIZE);
+		this.blobs = new HashMap<Player, List<Point>>();
+		if (other.blobs != null){
+			for (Entry<Player, List<Point>> es : other.blobs.entrySet()){
+				List<Point> points = new LinkedList<Point>(es.getValue());
+				this.blobs.put(es.getKey(), points);
+			}
 		}
-//		this.blobs = new HashMap<Player, LinkedList<Point>>(blobs);
-		this.height = tiles.length;
-		this.width = tiles[0].length;
+		
 	}
 	
 	public int getWidth(){
-		return width;
+		return SIZE;
 	}
 	
 	public int getHeight(){
-		return height;
+		return SIZE;
 	}
 	
 	//ATENCION only method that modifies board
-	public void setTile(Point target, Tile tile){
-		tiles[(int) target.getY()][(int) target.getX()] = tile;
+	public void setTile(Point target, Player p){
+		tiles[(int) target.getY() * SIZE + (int) target.getX()] = p.toTile();
 	}
 	
 	public Board putBlob(Player player, Point target){
-		Board board = new Board(this.tiles, this.blobs);
+		Board board = new Board(this);
 		
-		Blob blob = new Blob(player);
-		board.tiles[(int) target.getY()][(int) target.getX()] = blob;
+		board.setTile(target, player);
 //		board.blobs.get(player).add(target);
 		return board;
 	}
 	
 	 public Board deleteBlob(Player player, Point target){
-		Board board = new Board(this.tiles, this.blobs);
+		Board board = new Board(this);
 		
-		board.tiles[(int) target.getY()][(int) target.getX()] = new EmptyTile();
+		board.tiles[(int) target.getY() * SIZE + (int) target.getX()] = ' ';
 		
 //		board.blobs.get(player).remove(target);
 		return board;
 	}
 	 
-	public Tile getTile(Point source){
-		return this.tiles[(int) source.getY()][(int) source.getX()];
+	public char getTile(Point source){
+		return this.tiles[(int) source.getY() * SIZE + (int) source.getX()];
+	}
+	
+	public Player getTileOwner(Point source){
+		char t = getTile(source);
+		for (Player player : blobs.keySet()){
+			if (t == player.toTile()){
+				return player;
+			}
+		}
+		return null;
 	}
 	
 	private void fillTiles(){
 		int i, j;
-		for (i=0; i < height; i++){
-			for (j=0; j < width; j++){
-				tiles[i][j] = new EmptyTile();
-			}
-			
+		for (i=0; i < SIZE * SIZE; i++){
+				tiles[i] = ' ';
 		}
 	}
 	
@@ -89,7 +94,7 @@ public class Board {
 		List<Pair<Board, Movement>> children = new LinkedList<Pair<Board, Movement>>();
 		
 		for(Point source : blobs.get(player)){
-			children.addAll(this.strategy.generateBoards(this, source));
+			children.addAll(this.getStrategy().generateBoards(this, source));
 		}
 				
 		return children;
@@ -97,17 +102,25 @@ public class Board {
 	
 	public String toString(){
 		StringBuilder result = new StringBuilder();
-		for (Tile[] row : tiles){
-			for (Tile tile : row){
-				result.append("| " + tile.toString() + " ");
+		for (int i = 0; i < SIZE; i++){
+			for (int j = 0; j < SIZE; j++){
+				char tile = this.tiles[i * SIZE + j];
+				result.append("| ").append(tile).append(" ");
 			}
 			result.append("|\n");
-			for (int i = 0; i < row.length; i++){
+			for (int z = 0; z < SIZE; z++){
 				result.append("+---");
 			}
-			result.append("+");
-			result.append("\n");
+			result.append("+").append("\n");
 		}
 		return result.toString();
+	}
+
+	public Strategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(Strategy strategy) {
+		this.strategy = strategy;
 	}
 }

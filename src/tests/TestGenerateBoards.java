@@ -9,12 +9,10 @@ import game.Human;
 import game.Movement;
 import game.Player;
 import game.Strategy;
-import game.Tile;
 
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Test;
 
@@ -65,14 +63,13 @@ public class TestGenerateBoards {
 	public void upperAdyacentEnemy() {
 		Point source = new Point(0, 0);
 		
-		Board board = new Board(8, 8).
+		Board board = new Board().
 				putBlob(human, new Point(4, 4)).
 				putBlob(computer, new Point(4, 5));
 		
-		Board expect = new Board(8, 8).
+		Board expect = new Board().
 				putBlob(human, new Point(4, 4)).
 				putBlob(human, new Point(4, 5));
-		
 		assert(strategy.generateBoards(board, source).contains(expect));
 	}
 	
@@ -82,7 +79,7 @@ public class TestGenerateBoards {
 	}
 
 	private Board starterBoard(){
-		Board baseBoard = new Board(8, 8);
+		Board baseBoard = new Board();
 		baseBoard = baseBoard.
 				putBlob(human, new Point(0, 0)).
 				putBlob(human, new Point(0, 7)).
