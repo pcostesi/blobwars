@@ -15,7 +15,7 @@ public class BlobStrategy implements Strategy{
 		// devuelve board y destino, enlistados
 		List<Pair<Board, Movement>> list = new LinkedList<Pair<Board, Movement>>();
 		
-		addAdyacentMoves(list, board, player, source);
+		addMoves(list, board, player, source);
 		
 		return list;
 	}
@@ -52,9 +52,13 @@ public class BlobStrategy implements Strategy{
 		}
 	}
 	
-	private void addAdyacentMoves(List<Pair<Board, Movement>> list, Board board, Player player, Point source){
-		for (int dx = -1; dx < 2; dx++){
-			for (int dy = -1; dy < 2; dy++){
+	private int distance(Point source, Point target){
+		return (int) Math.min(Math.abs(source.getX() - target.getX()), Math.abs(source.getY() - target.getY()));
+	}
+	
+	private void addMoves(List<Pair<Board, Movement>> list, Board board, Player player, Point source){
+		for (int dx = -2; dx < 3; dx++){
+			for (int dy = -2; dy < 3; dy++){
 				if (dx == 0 && dy == 0){
 					continue;
 				}
@@ -69,11 +73,17 @@ public class BlobStrategy implements Strategy{
 				Point target = new Point(x, y);
 				
 				if (board.getTile(target).isEmpty()){
-					list.add(adyacentMove(board, player, source, target));
+					if (distance(target, source) <= 1){
+						list.add(adyacentMove(board, player, source, target));
+					} else {
+						list.add(twoCellsMove(board, player, source, target));
+					}
+					attack(player, board, target);
 				}
 			}
 		}
 	}
+	
 	
 	private Pair<Board, Movement> twoCellsMove(Board board, Player p, Point source, Point target){
 		Movement move = new Movement(source, target);
@@ -87,7 +97,19 @@ public class BlobStrategy implements Strategy{
 	@Override
 	public boolean isValid(Board board, Movement move) {
 		// TODO Auto-generated method stub
-		return false;
+		Point source = move.source;
+		Point target = move.target;
+		Tile sourceTile;
+		Tile targetTile;
+		if (source == target || distance(source, target) > 2){
+			return false;
+		}
+		sourceTile = board.getTile(source);
+		targetTile = board.getTile(target);
+		if (sourceTile.isEmpty() || !targetTile.isEmpty()){
+			return false;
+		}
+		return true;
 	}
 
 	@Override

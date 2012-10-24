@@ -3,6 +3,7 @@ package game;
 import structures.Pair;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,10 @@ public class Board {
 //	}
 	
 	public Board(Tile[][] tiles, Map<Player, LinkedList<Point>> blobs){
-		this.tiles = tiles.clone();
+		this.tiles = Arrays.copyOf(tiles, tiles.length);
+		for (int i = 0; i < Board.height; i++){
+			this.tiles[i] = Arrays.copyOf(tiles[i], tiles[i].length); //tiles[i].clone();	
+		}
 //		this.blobs = new HashMap<Player, LinkedList<Point>>(blobs);
 		this.height = tiles.length;
 		this.width = tiles[0].length;
@@ -55,7 +59,7 @@ public class Board {
 		Blob blob = new Blob(player);
 		board.tiles[(int) target.getY()][(int) target.getX()] = blob;
 //		board.blobs.get(player).add(target);
-		return this;
+		return board;
 	}
 	
 	 public Board deleteBlob(Player player, Point target){
@@ -64,7 +68,7 @@ public class Board {
 		board.tiles[(int) target.getY()][(int) target.getX()] = new EmptyTile();
 		
 //		board.blobs.get(player).remove(target);
-		return this;
+		return board;
 	}
 	 
 	public Tile getTile(Point source){
@@ -89,5 +93,21 @@ public class Board {
 		}
 				
 		return children;
+	}
+	
+	public String toString(){
+		StringBuilder result = new StringBuilder();
+		for (Tile[] row : tiles){
+			for (Tile tile : row){
+				result.append("| " + tile.toString() + " ");
+			}
+			result.append("|\n");
+			for (int i = 0; i < row.length; i++){
+				result.append("+---");
+			}
+			result.append("+");
+			result.append("\n");
+		}
+		return result.toString();
 	}
 }

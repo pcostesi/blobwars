@@ -13,5 +13,9 @@ public class Computer implements Player {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public String toString(){
+		return "X";
+	}
 
 }
