@@ -1,23 +1,19 @@
 package structures;
-import java.lang.Integer;
 
-import java.awt.Point;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 import game.Board;
 import game.Movement;
 import game.Player;
-import game.Strategy;
+
+import java.util.List;
 
 public class MinMaxTree {
 	private Node root;
-	private Strategy strategy;
+	private int max_height;
 	
-	public MinMaxTree(Strategy strategy, Board board){
+	public MinMaxTree(Board board, int height){
 		this.root = new Node(board, null);
-		this.strategy = strategy;
+		max_height = height;
 	}
 	
 	private static class Node{
@@ -33,13 +29,12 @@ public class MinMaxTree {
 	}
 	
 	private int minimax(Node node, int level){
-		if (level == 0){
-			return strategy.evaluateScore(node.board);
+		if (level == max_height){
+			return node.board.getStrategy().evaluateScore(node.board);
 		}
 		
 		Node nodeChild;
 		
-		Player player = strategy.getPlayer(level);
 		
 		int score = player.initialScore(); 
 		
@@ -49,7 +44,6 @@ public class MinMaxTree {
 			localScore = minimax(nodeChild, level - 1);
 			node.children.add(nodeChild);
 			
-//			if ((level % 2 == 0 && localScore < score) || (level % 2 == 1 && localScore > score)){
 			if (player.betterScore(score, localScore)){
 				score = localScore;
 				node.bestMove = pair.getSecond();

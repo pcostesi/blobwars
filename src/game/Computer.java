@@ -5,7 +5,7 @@ public class Computer implements Player {
 	@Override
 	public boolean betterScore(int score, int localScore) {
 		// TODO Auto-generated method stub
-		return false;
+		return localScore > score;
 	}
 
 	@Override
@@ -14,8 +14,12 @@ public class Computer implements Player {
 		return 0;
 	}
 	
+	public char toTile(){
+		return 'c';
+	}
+	
 	public String toString(){
-		return "X";
+		return "c";
 	}
 
 }
