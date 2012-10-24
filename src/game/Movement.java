@@ -1,6 +1,7 @@
 package game;
 
-import java.awt.Point;
+import structures.Point;
+
 
 public class Movement {
 		public final Point source;
