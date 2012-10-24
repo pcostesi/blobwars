@@ -11,7 +11,7 @@ public class Human implements Player{
 	@Override
 	public int initialScore() {
 		// TODO Auto-generated method stub
-		return 0;
+		return Integer.MAX_VALUE;
 	}
 
 	

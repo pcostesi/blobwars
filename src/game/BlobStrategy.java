@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,10 +9,22 @@ import structures.Pair;
 
 public class BlobStrategy implements Strategy{
 
+	Human human;
+	Computer computer;
+	
+	public BlobStrategy(Human h, Computer c){
+		human = h;
+		computer = c;
+	}
+	
 	@Override
 	public List<Pair<Board, Movement>> generateBoards(Board board, Point source) {
 		
-		Player player = null;
+		Player player = board.getTileOwner(source);
+		
+		if (player == null){
+			throw new RuntimeException("Player is null");
+		}
 		// devuelve board y destino, enlistados
 		List<Pair<Board, Movement>> list = new LinkedList<Pair<Board, Movement>>();
 		
@@ -20,13 +33,6 @@ public class BlobStrategy implements Strategy{
 		return list;
 	}
 	
-	private Pair<Board, Movement> adyacentMove(Board board, Player player, Point source, Point target){
-		Movement move = new Movement(source, target);
-		
-		board.putBlob(player, target);
-		
-		return new Pair<Board, Movement>(board, move);
-	}
 	
 	// Only method that modifies the board
 	private void attack(Player player, Board board, Point source){
@@ -39,13 +45,13 @@ public class BlobStrategy implements Strategy{
 				int x = (int) (source.getX() + dx);
 				int y = (int) (source.getY() + dy);
 				
-				if (x < 0 || y < 0 || x > board.getWidth() || y > board.getHeight()){
+				if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()){
 					continue;
 				}
 				
 				Point target = new Point(x, y);
 				
-				if (board.getTileOwner(target) == null){
+				if (board.getTileOwner(target) != null){
 					board.setTile(target, player);
 				}
 			}
@@ -53,10 +59,11 @@ public class BlobStrategy implements Strategy{
 	}
 	
 	private int distance(Point source, Point target){
-		return (int) Math.min(Math.abs(source.getX() - target.getX()), Math.abs(source.getY() - target.getY()));
+		return (int) Math.max(Math.abs(source.getX() - target.getX()), Math.abs(source.getY() - target.getY()));
 	}
 	
-	private void addMoves(List<Pair<Board, Movement>> list, Board board, Player player, Point source){
+	private void addMoves(List<Pair<Board, Movement>> list, Board base, Player player, Point source){
+		Board board;
 		for (int dx = -2; dx < 3; dx++){
 			for (int dy = -2; dy < 3; dy++){
 				if (dx == 0 && dy == 0){
@@ -66,32 +73,27 @@ public class BlobStrategy implements Strategy{
 				int x = (int) (source.getX() + dx);
 				int y = (int) (source.getY() + dy);
 				
-				if (x < 0 || y < 0 || x > board.getWidth() || y > board.getHeight()){
+				if (x < 0 || y < 0 || x >= base.getWidth() || y >= base.getHeight()){
 					continue;
 				}
 				
 				Point target = new Point(x, y);
-				
-				if (board.getTileOwner(target) == null){
-					if (distance(target, source) <= 1){
-						list.add(adyacentMove(board, player, source, target));
-					} else {
-						list.add(twoCellsMove(board, player, source, target));
-					}
-					attack(player, board, target);
+				board = (Board) base.clone();
+				if (board.getTileOwner(target) != null){
+					continue;
 				}
+				Movement move = new Movement(source, target);
+				board = board.putBlob(player, target);
+				if (distance(target, source) == 2){
+					board = board.deleteBlob(player, source);
+				}
+				attack(player, board, target);
+				list.add(new Pair<Board, Movement>(board, move));
 			}
 		}
 	}
 	
 	
-	private Pair<Board, Movement> twoCellsMove(Board board, Player p, Point source, Point target){
-		Movement move = new Movement(source, target);
-		board.putBlob(p, target);
-		board.deleteBlob(p, source);
-		
-		return new Pair<Board, Movement>(board, move);
-	}
 	
 	
 	@Override
@@ -110,9 +112,9 @@ public class BlobStrategy implements Strategy{
 	}
 
 	@Override
-	public int evaluateScore(Board board) {
-		// TODO Auto-generated method stub
-		return 5;
+	public int evaluateScore(Board board, Player p) {
+		int tiles = board.countTilesForPlayer(computer) - board.countTilesForPlayer(human);
+		return p == computer ? tiles : -tiles;
 	}
 
 
