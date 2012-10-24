@@ -1,47 +1,46 @@
 package game;
 
-import structures.Pair;
-
-import java.awt.Point;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import javax.management.RuntimeErrorException;
+import structures.Pair;
+import structures.Point;
 
 public class Board implements Cloneable {
 	protected static final int SIZE = 8;
 	private Strategy strategy; 
 	
-	char[] tiles;
-	private Map<Player, List<Point>> blobs = new HashMap<Player, List<Point>>();
-
-	public Board(Strategy strategy, Player... players){
+	//char[] tiles;
+	Player[] owner;
+	private Player player1;
+	private Player player2;
+	
+	public Board(Strategy strategy, Player pl1, Player pl2){
 		this.strategy = strategy;
-		this.tiles = new char[SIZE * SIZE];
+		//this.tiles = new char[SIZE * SIZE];
+		this.owner= new Player[SIZE * SIZE];
 		fillTiles();
-		for (Player p : players){
-			blobs.put(p, new LinkedList<Point>());
-		}
+		player1 = pl1;
+		player2 = pl2;
 		
 	}
 	
 	public int countTilesForPlayer(Player p){
-		return blobs.containsKey(p) ? blobs.get(p).size() : 0;
+		int base = 0;
+		for (Player cur : owner){
+			if (cur != null && cur.equals(p)){
+				base++;
+			}
+		}
+		return base;
 	}
 	
 	public Board(Board other){
-		this.tiles = Arrays.copyOf(other.tiles, SIZE * SIZE);
-		this.blobs = new HashMap<Player, List<Point>>();
-		if (other.blobs != null){
-			for (Entry<Player, List<Point>> es : other.blobs.entrySet()){
-				List<Point> points = new LinkedList<Point>(es.getValue());
-				this.blobs.put(es.getKey(), points);
-			}
-		}
+		//this.tiles = Arrays.copyOf(other.tiles, SIZE * SIZE);
+		this.owner = Arrays.copyOf(other.owner, SIZE * SIZE);
+		this.player1 = other.player1;
+		this.player2 = other.player2;
 		this.strategy = other.strategy;
 		
 	}
@@ -56,47 +55,53 @@ public class Board implements Cloneable {
 	
 	//ATTENTION only method that modifies board
 	public void setTile(Point target, Player p){
-		tiles[pointToIndex(target)] = p.toTile();
+		//tiles[pointToIndex(target)] = p.toTile();
+		owner[pointToIndex(target)] = p;
 	}
 	
 	public Board putBlob(Player player, Point target){
 		setTile(target, player);
-		blobs.get(player).add(target);
 		return this;
 	}
 	
 	 public Board deleteBlob(Player player, Point target){
-		tiles[pointToIndex(target)] = ' ';
-		blobs.get(player).remove(target);
+		//tiles[pointToIndex(target)] = ' ';
+		owner[pointToIndex(target)] = null;
 		return this;
 	}
 	 
 	public char getTile(Point source){
-		return this.tiles[pointToIndex(source)];
+		Player p = getTileOwner(source);
+		if (p == null){
+			return ' ';
+		}
+		return p.toTile();
+		//return this.tiles[pointToIndex(source)];
 	}
 	
 	public Player getTileOwner(Point source){
-		char t = getTile(source);
-		for (Player player : blobs.keySet()){
-			if (t == player.toTile()){
-				return player;
-			}
-		}
-		return null;
+		//char t = getTile(source);
+		return owner[pointToIndex(source)];
 	}
 	
 	private void fillTiles(){
 		int i;
-		for (i=0; i < SIZE * SIZE; i++){
-				tiles[i] = ' ';
-		}
+		//for (i=0; i < SIZE * SIZE; i++){
+		//		tiles[i] = ' ';
+		//}
 	}
 	
 	public List<Pair<Board, Movement>> generateChildren(Player player){
 		List<Pair<Board, Movement>> children = new LinkedList<Pair<Board, Movement>>();
 		
-		for(Point source : blobs.get(player)){
-			children.addAll(strategy.generateBoards(this, source));
+		for (int i = 0; i < SIZE; i++){
+			for (int j = 0; j < SIZE; j++){
+				Point source = Point.getInstance(j, i);
+				if (owner[pointToIndex(source)] == player){
+					//children.addAll(strategy.generateBoards(this, source));
+					strategy.injectBoards(this, source, children);
+				}
+			}
 		}
 				
 		return children;
@@ -106,7 +111,10 @@ public class Board implements Cloneable {
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
-				char tile = this.tiles[i * SIZE + j];
+				char tile = ' ';
+				if (owner[i * SIZE + j] != null){
+					tile = owner[i * SIZE + j].toTile();
+				}
 				result.append("| ").append(tile).append(" ");
 			}
 			result.append("|\n");
@@ -127,7 +135,7 @@ public class Board implements Cloneable {
 	}
 	
 	private int pointToIndex(Point p){
-		return (int) (p.getX() + p.getY() * SIZE);
+		return (p.getX() + p.getY() * SIZE);
 	}
 	
 	public Object clone(){

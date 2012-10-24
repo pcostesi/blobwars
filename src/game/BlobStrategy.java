@@ -1,11 +1,10 @@
 package game;
 
-import java.awt.Point;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import structures.Pair;
+import structures.Point;
 
 public class BlobStrategy implements Strategy{
 
@@ -49,7 +48,7 @@ public class BlobStrategy implements Strategy{
 					continue;
 				}
 				
-				Point target = new Point(x, y);
+				Point target = Point.getInstance(x, y);
 				
 				if (board.getTileOwner(target) != null){
 					board.setTile(target, player);
@@ -77,7 +76,7 @@ public class BlobStrategy implements Strategy{
 					continue;
 				}
 				
-				Point target = new Point(x, y);
+				Point target = Point.getInstance(x, y);
 				board = (Board) base.clone();
 				if (board.getTileOwner(target) != null){
 					continue;
@@ -115,6 +114,18 @@ public class BlobStrategy implements Strategy{
 	public int evaluateScore(Board board, Player p) {
 		int tiles = board.countTilesForPlayer(computer) - board.countTilesForPlayer(human);
 		return p == computer ? tiles : -tiles;
+	}
+
+	@Override
+	public void injectBoards(Board board, Point source,
+			List<Pair<Board, Movement>> list) {
+		Player player = board.getTileOwner(source);
+		
+		if (player == null){
+			throw new RuntimeException("Player is null");
+		}
+		addMoves(list, board, player, source);
+		
 	}
 
 
