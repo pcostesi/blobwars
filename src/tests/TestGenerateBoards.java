@@ -21,11 +21,11 @@ import structures.Pair;
 public class TestGenerateBoards {
 	private Strategy strategy;
 	
-	private Player computer = new Computer();
-	private Player human = new Human();
+	private Computer computer = new Computer();
+	private Human human = new Human();
 
 	public void before(){
-		this.strategy = new BlobStrategy();
+		this.strategy = new BlobStrategy(human, computer);
 	}
 	
 	@Test
@@ -63,11 +63,11 @@ public class TestGenerateBoards {
 	public void upperAdyacentEnemy() {
 		Point source = new Point(0, 0);
 		
-		Board board = new Board().
+		Board board = new Board(strategy, human, computer).
 				putBlob(human, new Point(4, 4)).
 				putBlob(computer, new Point(4, 5));
 		
-		Board expect = new Board().
+		Board expect = new Board(strategy, human, computer).
 				putBlob(human, new Point(4, 4)).
 				putBlob(human, new Point(4, 5));
 		assert(strategy.generateBoards(board, source).contains(expect));
@@ -79,7 +79,7 @@ public class TestGenerateBoards {
 	}
 
 	private Board starterBoard(){
-		Board baseBoard = new Board();
+		Board baseBoard = new Board(strategy, human, computer);
 		baseBoard = baseBoard.
 				putBlob(human, new Point(0, 0)).
 				putBlob(human, new Point(0, 7)).

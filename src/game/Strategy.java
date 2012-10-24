@@ -8,7 +8,7 @@ import structures.Pair;
 public interface Strategy {
 	public abstract List<Pair<Board, Movement>> generateBoards(Board board, Point source); 
 	public abstract boolean isValid(Board board, Movement move);
-	public abstract int evaluateScore(Board board);
+	public abstract int evaluateScore(Board board, Player p);
 
 
 }

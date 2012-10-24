@@ -10,22 +10,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class Board {
+import javax.management.RuntimeErrorException;
+
+public class Board implements Cloneable {
 	protected static final int SIZE = 8;
 	private Strategy strategy; 
 	
 	char[] tiles;
-	private Map<Player, List<Point>> blobs;
+	private Map<Player, List<Point>> blobs = new HashMap<Player, List<Point>>();
 
-	public Board(){
+	public Board(Strategy strategy, Player... players){
+		this.strategy = strategy;
 		this.tiles = new char[SIZE * SIZE];
 		fillTiles();
+		for (Player p : players){
+			blobs.put(p, new LinkedList<Point>());
+		}
 		
 	}
 	
-//	public void addPlayer(Player player){
-//		this.blobs.put(player, new LinkedList<Point>);
-//	}
+	public int countTilesForPlayer(Player p){
+		return blobs.containsKey(p) ? blobs.get(p).size() : 0;
+	}
 	
 	public Board(Board other){
 		this.tiles = Arrays.copyOf(other.tiles, SIZE * SIZE);
@@ -36,6 +42,7 @@ public class Board {
 				this.blobs.put(es.getKey(), points);
 			}
 		}
+		this.strategy = other.strategy;
 		
 	}
 	
@@ -47,30 +54,25 @@ public class Board {
 		return SIZE;
 	}
 	
-	//ATENCION only method that modifies board
+	//ATTENTION only method that modifies board
 	public void setTile(Point target, Player p){
-		tiles[(int) target.getY() * SIZE + (int) target.getX()] = p.toTile();
+		tiles[pointToIndex(target)] = p.toTile();
 	}
 	
 	public Board putBlob(Player player, Point target){
-		Board board = new Board(this);
-		
-		board.setTile(target, player);
-//		board.blobs.get(player).add(target);
-		return board;
+		setTile(target, player);
+		blobs.get(player).add(target);
+		return this;
 	}
 	
 	 public Board deleteBlob(Player player, Point target){
-		Board board = new Board(this);
-		
-		board.tiles[(int) target.getY() * SIZE + (int) target.getX()] = ' ';
-		
-//		board.blobs.get(player).remove(target);
-		return board;
+		tiles[pointToIndex(target)] = ' ';
+		blobs.get(player).remove(target);
+		return this;
 	}
 	 
 	public char getTile(Point source){
-		return this.tiles[(int) source.getY() * SIZE + (int) source.getX()];
+		return this.tiles[pointToIndex(source)];
 	}
 	
 	public Player getTileOwner(Point source){
@@ -84,7 +86,7 @@ public class Board {
 	}
 	
 	private void fillTiles(){
-		int i, j;
+		int i;
 		for (i=0; i < SIZE * SIZE; i++){
 				tiles[i] = ' ';
 		}
@@ -94,7 +96,7 @@ public class Board {
 		List<Pair<Board, Movement>> children = new LinkedList<Pair<Board, Movement>>();
 		
 		for(Point source : blobs.get(player)){
-			children.addAll(this.getStrategy().generateBoards(this, source));
+			children.addAll(strategy.generateBoards(this, source));
 		}
 				
 		return children;
@@ -123,4 +125,13 @@ public class Board {
 	public void setStrategy(Strategy strategy) {
 		this.strategy = strategy;
 	}
+	
+	private int pointToIndex(Point p){
+		return (int) (p.getX() + p.getY() * SIZE);
+	}
+	
+	public Object clone(){
+		return new Board(this);
+	}
+	
 }
