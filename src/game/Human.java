@@ -14,4 +14,8 @@ public class Human implements Player{
 		return 0;
 	}
 
+	
+	public String toString(){
+		return "O";
+	}
 }

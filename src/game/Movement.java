@@ -10,4 +10,8 @@ public class Movement {
 			this.source = source;
 			this.target = target;
 		}
+		
+		public String toString(){
+			return source + " -> " + target;
+		}
 }

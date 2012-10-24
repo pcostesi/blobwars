@@ -15,4 +15,8 @@ public class Blob implements Tile {
 	public boolean isEmpty(){
 		return false;
 	}
+	
+	public String toString(){
+		return player.toString();
+	}
 }

@@ -44,6 +44,22 @@ public class TestGenerateBoards {
 		assert(strategy.generateBoards(board, source).containsAll(expect));
 	}
 	
+	@Test
+	public void twoSteps() {
+		Board board = starterBoard().deleteBlob(human, new Point(0, 0)); 
+		Point source = new Point(0, 0);
+		
+		List<Pair<Board, Movement>> expect = new LinkedList<Pair<Board, Movement>>();
+		
+		expect.add(mockAdyacentMove(human, board, source, new Point(2, 0)));
+		expect.add(mockAdyacentMove(human, board, source, new Point(0, 2)));
+		expect.add(mockAdyacentMove(human, board, source, new Point(1, 2)));
+		expect.add(mockAdyacentMove(human, board, source, new Point(2, 1)));
+		expect.add(mockAdyacentMove(human, board, source, new Point(2, 2)));
+		
+		assert(strategy.generateBoards(board, source).containsAll(expect));
+	}
+	
 	
 	@Test
 	public void upperAdyacentEnemy() {

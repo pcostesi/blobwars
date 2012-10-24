@@ -11,4 +11,8 @@ public class EmptyTile implements Tile {
 	public boolean isEmpty() {
 		return true;
 	}
+	
+	public String toString(){
+		return " ";
+	}
 }
