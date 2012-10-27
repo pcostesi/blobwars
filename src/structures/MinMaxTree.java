@@ -15,11 +15,11 @@ public class MinMaxTree {
 	private Player[] players;
 	private Strategy strategy;
 	
-	public MinMaxTree(Board board, int height, Player... players){
+	public MinMaxTree(Strategy strategy, Board board, int height, Player... players){
 		this.root = new Node(board, null);
 		max_height = height;
 		this.players = players;
-		this.strategy = board.getStrategy();
+		this.strategy = strategy; 
 	}
 	
 	private static class Node{
