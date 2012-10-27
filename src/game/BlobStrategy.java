@@ -32,7 +32,6 @@ public class BlobStrategy implements Strategy{
 		return list;
 	}
 	
-	
 	// Only method that modifies the board
 	private void attack(Player player, Board board, Point source){
 		for (int dx = -1; dx < 2; dx++){
@@ -92,9 +91,6 @@ public class BlobStrategy implements Strategy{
 		}
 	}
 	
-	
-	
-	
 	@Override
 	public boolean isValid(Board board, Movement move) {
 		// TODO Auto-generated method stub
@@ -125,8 +121,26 @@ public class BlobStrategy implements Strategy{
 			throw new RuntimeException("Player is null");
 		}
 		addMoves(list, board, player, source);
-		
 	}
 
-
+	@Override
+	public Board move(Board board, Player player, Movement move) {
+		System.out.println("entra al metodo");
+			if (distance(move.source, move.target) > 2){
+				return board;
+			}
+			//evaluar que pasa con cada movimiento
+			board.putBlob(player, move.target);
+			board.deleteBlob(player, move.source);
+			return board;
+	}
+	
+	public Board startingBoard(){
+		Board board = new Board(this, human, computer);
+		board.putBlob(human, new Point(0, 7));
+		board.putBlob(human, new Point(0, 0));
+		board.putBlob(computer, new Point(0, 7));
+		board.putBlob(computer, new Point(7, 7));
+		return board;
+	}
 }

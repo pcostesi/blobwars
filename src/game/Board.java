@@ -57,10 +57,13 @@ public class Board implements Cloneable {
 	public void setTile(Point target, Player p){
 		//tiles[pointToIndex(target)] = p.toTile();
 		owner[pointToIndex(target)] = p;
+		System.out.println(target);
 	}
 	
 	public Board putBlob(Player player, Point target){
 		setTile(target, player);
+		
+		System.out.println(target.getX()+ ", " + target.getY());
 		return this;
 	}
 	
@@ -126,14 +129,6 @@ public class Board implements Cloneable {
 		return result.toString();
 	}
 
-	public Strategy getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(Strategy strategy) {
-		this.strategy = strategy;
-	}
-	
 	private int pointToIndex(Point p){
 		return (p.getX() + p.getY() * SIZE);
 	}
