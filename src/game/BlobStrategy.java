@@ -3,6 +3,8 @@ package game;
 import java.util.LinkedList;
 import java.util.List;
 
+import frontend.GameController;
+
 import structures.Pair;
 import structures.Point;
 
@@ -10,6 +12,7 @@ public class BlobStrategy implements Strategy{
 
 	Human human;
 	Computer computer;
+	GameController observer;
 	
 	public BlobStrategy(Human h, Computer c){
 		human = h;
@@ -125,13 +128,17 @@ public class BlobStrategy implements Strategy{
 
 	@Override
 	public Board move(Board board, Player player, Movement move) {
-		System.out.println("entra al metodo");
 			if (distance(move.source, move.target) > 2){
 				return board;
 			}
 			//evaluar que pasa con cada movimiento
 			board.putBlob(player, move.target);
 			board.deleteBlob(player, move.source);
+			
+			if (observer != null){
+				observer.onTileUpdate(move.source.getY(), move.source.getX(), board.getTile(move.source));
+				observer.onTileUpdate(move.target.getY(), move.target.getX(), board.getTile(move.target));
+			}
 			return board;
 	}
 	
@@ -142,5 +149,10 @@ public class BlobStrategy implements Strategy{
 		board.putBlob(computer, new Point(0, 7));
 		board.putBlob(computer, new Point(7, 7));
 		return board;
+	}
+
+	@Override
+	public void setObserver(GameController observer) {
+		this.observer = observer;
 	}
 }

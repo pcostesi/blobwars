@@ -33,20 +33,17 @@ public class Game {
 	
 	public void start(GameController observer) {
 		this.observer = observer;
+		this.strategy.setObserver(observer);
 		printBoard();
 	}
 	
 	public void move(Movement move){
-		System.out.println(move);
+		System.out.println(board);
 		if (strategy.isValid(board, move)){
 			this.board = strategy.move(board, human, move);
-			// We could print all the board, or the strategy could know which ones to print
-			
-			printBoard();
 		}
-		
 	}
-
+	
 	private void printBoard() {
 		for (int i = 0; i < getBoardHeight(); i++){
 			for (int j = 0; j < getBoardWidth(); j++){
@@ -58,4 +55,5 @@ public class Game {
 			}
 		}
 	}
+	
 }
