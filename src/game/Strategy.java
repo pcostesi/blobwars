@@ -2,6 +2,8 @@ package game;
 
 import java.util.List;
 
+import frontend.GameController;
+
 import structures.Pair;
 import structures.Point;
 
@@ -12,6 +14,7 @@ public interface Strategy {
 	public abstract int evaluateScore(Board board, Player p);
 	public abstract Board move(Board board, Player player, Movement move);
 	public abstract Board startingBoard();
+	public abstract void setObserver(GameController observer);
 
 
 }

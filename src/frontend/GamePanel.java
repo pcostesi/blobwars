@@ -25,6 +25,8 @@ public class GamePanel extends JPanel implements View {
 	private BoardPanel boardPanel;
 	private JPanel statusPanel;
 	private Image background;
+	private Image humanBlob;
+	private Image computerBlob;
 
 	public GamePanel(GameController controller, int boardHeight, int boardWidth) {
 		this.controller = controller;
@@ -49,9 +51,10 @@ public class GamePanel extends JPanel implements View {
 							"Unable to load all resources. You may continue to play the game, but some images may not show.",
 							"Resource error", JOptionPane.WARNING_MESSAGE);
 		}
-
+		
 		initializeBoard();
 		initializeStatusPanel();
+		loadPlayerAssets();
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		setSize(boardPanel.getWidth() + 20, boardPanel.getHeight() + 68);
 	}
@@ -89,17 +92,24 @@ public class GamePanel extends JPanel implements View {
 		statusPanel.setOpaque(false);
 		add(statusPanel, BorderLayout.SOUTH);
 	}
-
-	public void updateTile(int row, int column, char player) {
-		Image img = null;
+	
+	private void loadPlayerAssets(){
 		try {
-			img = ImageUtils.loadImage("resources/blob.png");
+			this.humanBlob = ImageUtils.loadImage("resources/blob_human.png");
+			this.computerBlob = ImageUtils.loadImage("resources/blob_computer.png");
 		} catch (IOException e) {
 		}
-		System.out.println("imprimir " + row + ", "+ column);
-		
+	}
+
+	public void updateTile(int row, int column, char player) {
 		boardPanel.clearImage(row, column);
-			boardPanel.appendImage(row, column, img);
+		
+		if (player == 'h'){ 
+			boardPanel.appendImage(row, column, humanBlob);
+		} else if (player == 'c'){
+			boardPanel.appendImage(row, column, computerBlob);
+		}
+		
 		boardPanel.repaint();
 	}
 	
