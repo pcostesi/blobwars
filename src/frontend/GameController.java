@@ -20,8 +20,8 @@ public class GameController{
 	}
 
 	public void move(int sourceRow, int sourceColumn, int targetRow, int targetColumn) {
-		Point source = new Point(sourceColumn, sourceRow);
-		Point target = new Point(targetColumn, targetRow);
+		Point source = Point.getInstance(sourceColumn, sourceRow);
+		Point target = Point.getInstance(targetColumn, targetRow);
 		Movement move = new Movement(source, target);
 		this.game.move(move);
 	}

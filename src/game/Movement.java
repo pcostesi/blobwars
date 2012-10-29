@@ -15,4 +15,8 @@ public class Movement {
 		public String toString(){
 			return source + " -> " + target;
 		}
+		
+		public int distance(){
+			return (int) Math.max(Math.abs(source.getX() - target.getX()), Math.abs(source.getY() - target.getY()));
+		}
 }

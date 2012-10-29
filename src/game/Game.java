@@ -38,7 +38,6 @@ public class Game {
 	}
 	
 	public void move(Movement move){
-		System.out.println(board);
 		if (strategy.isValid(board, move)){
 			this.board = strategy.move(board, human, move);
 		}
@@ -49,7 +48,6 @@ public class Game {
 			for (int j = 0; j < getBoardWidth(); j++){
 				Point source = Point.getInstance(j, i);
 				if (board.getTile(source) != ' '){
-					System.out.println(source);
 					observer.onTileUpdate(i, j, board.getTile(source));
 				}
 			}
