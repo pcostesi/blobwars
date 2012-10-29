@@ -37,6 +37,12 @@ public class Game {
 		printBoard();
 	}
 	
+	public void humanMove(Movement move){
+		if (board.getTileOwner(move.source) == human){
+			move(move);
+		}
+	}
+	
 	public void move(Movement move){
 		if (strategy.isValid(board, move)){
 			this.board = strategy.move(board, board.getTileOwner(move.source), move);

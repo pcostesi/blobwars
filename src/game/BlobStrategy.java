@@ -84,7 +84,6 @@ public class BlobStrategy implements Strategy{
 		
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
 			return moveIdx < top;
 		}
 
@@ -112,9 +111,9 @@ public class BlobStrategy implements Strategy{
 	
 	@Override
 	public boolean isValid(Board board, Movement move) {
-		// TODO Auto-generated method stub
 		Point source = move.source;
 		Point target = move.target;
+		
 		if (source == target || move.distance() > 2){
 			return false;
 		}
@@ -133,13 +132,13 @@ public class BlobStrategy implements Strategy{
 
 	@Override
 	public Board move(Board board, Player player, Movement move) {
-			if (move.distance() > 2){
-				return board;
-			}
 			//evaluar que pasa con cada movimiento
 			board.putBlob(player, move.target);
 			board.deleteBlob(player, move.source);
 			
+			if (move.distance() == 2){
+				attack(player, board, move.target);
+			}			
 			if (observer != null){
 				observer.onTileUpdate(move.source.getY(), move.source.getX(), board.getTile(move.source));
 				observer.onTileUpdate(move.target.getY(), move.target.getX(), board.getTile(move.target));
