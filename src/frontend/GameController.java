@@ -31,8 +31,7 @@ public class GameController{
 		Point target = Point.getInstance(targetColumn, targetRow);
 		Movement move = new Movement(source, target);
 		
-		this.game.humanMove(move);
-		humanTurn = false;
+		humanTurn = !this.game.humanMove(move);
 	}
 
 	public void onTileUpdate(int row, int column, char player) {

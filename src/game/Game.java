@@ -37,16 +37,19 @@ public class Game {
 		printBoard();
 	}
 	
-	public void humanMove(Movement move){
+	public boolean humanMove(Movement move){
 		if (board.getTileOwner(move.source) == human){
-			move(move);
+			return move(move);
 		}
+		return false;
 	}
 	
-	public void move(Movement move){
+	public boolean move(Movement move){
 		if (strategy.isValid(board, move)){
 			this.board = strategy.move(board, board.getTileOwner(move.source), move);
+			return true;
 		}
+		return false;
 	}
 	
 	private void printBoard() {
