@@ -39,7 +39,7 @@ public class Game {
 	
 	public void move(Movement move){
 		if (strategy.isValid(board, move)){
-			this.board = strategy.move(board, human, move);
+			this.board = strategy.move(board, board.getTileOwner(move.source), move);
 		}
 	}
 	
@@ -52,6 +52,17 @@ public class Game {
 				}
 			}
 		}
+	}
+	
+	public Strategy getStrategy(){
+		return strategy;
+	}
+	
+	public Player[] getPlayers(){
+		Player[] players = new Player[2];
+		players[0] = computer;
+		players[1] = human;
+		return players;
 	}
 	
 }
