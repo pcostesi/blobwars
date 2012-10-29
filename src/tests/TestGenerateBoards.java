@@ -11,18 +11,22 @@ import game.Strategy;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import structures.Pair;
 import structures.Point;
 
 public class TestGenerateBoards {
+	
+	private Computer computer;
+	private Human human;
 	private Strategy strategy;
 	
-	private Computer computer = new Computer();
-	private Human human = new Human();
-
+	@Before
 	public void before(){
+		this.human = new Human();
+		this.computer = new Computer();
 		this.strategy = new BlobStrategy(human, computer);
 	}
 	
@@ -37,12 +41,17 @@ public class TestGenerateBoards {
 		expect.add(mockAdyacentMove(human, board, source, Point.getInstance(0, 1)));
 		expect.add(mockAdyacentMove(human, board, source, Point.getInstance(1, 1)));
 		
-		assert(strategy.generateBoards(board, source).containsAll(expect));
+		List<Pair<Board, Movement>> got = new LinkedList<Pair<Board, Movement>>();
+		for (Pair<Board, Movement> move : strategy.boardsForMove(board, source)){
+			got.add(move);
+		}
+		
+		assert(got.containsAll(expect));
 	}
 	
 	@Test
 	public void twoSteps() {
-		Board board = starterBoard().deleteBlob(human, Point.getInstance(0, 0)); 
+		Board board = starterBoard(); 
 		Point source = Point.getInstance(0, 0);
 		
 		List<Pair<Board, Movement>> expect = new LinkedList<Pair<Board, Movement>>();
@@ -53,13 +62,18 @@ public class TestGenerateBoards {
 		expect.add(mockAdyacentMove(human, board, source, Point.getInstance(2, 1)));
 		expect.add(mockAdyacentMove(human, board, source, Point.getInstance(2, 2)));
 		
-		assert(strategy.generateBoards(board, source).containsAll(expect));
+		List<Pair<Board, Movement>> got = new LinkedList<Pair<Board, Movement>>();
+		for (Pair<Board, Movement> move : strategy.boardsForMove(board, source)){
+			got.add(move);
+		}
+		
+		assert(got.containsAll(expect));
 	}
 	
 	
 	@Test
 	public void upperAdyacentEnemy() {
-		Point source = Point.getInstance(0, 0);
+		Point source = Point.getInstance(4, 4);
 		
 		Board board = new Board(strategy, human, computer).
 				putBlob(human, Point.getInstance(4, 4)).
@@ -67,13 +81,20 @@ public class TestGenerateBoards {
 		
 		Board expect = new Board(strategy, human, computer).
 				putBlob(human, Point.getInstance(4, 4)).
-				putBlob(human, Point.getInstance(4, 5));
-		assert(strategy.generateBoards(board, source).contains(expect));
+				putBlob(human, Point.getInstance(4, 4)).
+				putBlob(human, Point.getInstance(5, 5));
+		
+		List<Pair<Board, Movement>> got = new LinkedList<Pair<Board, Movement>>();
+		for (Pair<Board, Movement> move : strategy.boardsForMove(board, source)){
+			got.add(move);
+		}
+		
+		assert(got.contains(expect));
 	}
 	
 	private Pair<Board, Movement> mockAdyacentMove(Player p, Board board, Point source, Point target){
 		return 	new Pair<Board, Movement>(
-				board.putBlob(p, target), new Movement(source, target));
+				((Board) board.clone()).putBlob(p, target), new Movement(source, target));
 	}
 
 	private Board starterBoard(){

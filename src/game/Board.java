@@ -1,26 +1,24 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import structures.Pair;
 import structures.Point;
+import util.Chain;
 
 public class Board implements Cloneable {
 	protected static final int SIZE = 8;
 	private Strategy strategy; 
 	
-	//char[] tiles;
 	Player[] owner;
 	private Player player1;
 	private Player player2;
 	
 	public Board(Strategy strategy, Player pl1, Player pl2){
 		this.strategy = strategy;
-		//this.tiles = new char[SIZE * SIZE];
-		this.owner= new Player[SIZE * SIZE];
-		fillTiles();
+		this.owner = new Player[SIZE * SIZE];
 		player1 = pl1;
 		player2 = pl2;
 		
@@ -55,15 +53,12 @@ public class Board implements Cloneable {
 	
 	//ATTENTION only method that modifies board
 	public void setTile(Point target, Player p){
-		//tiles[pointToIndex(target)] = p.toTile();
 		owner[pointToIndex(target)] = p;
-		System.out.println(target);
 	}
 	
 	public Board putBlob(Player player, Point target){
 		setTile(target, player);
 		
-		System.out.println(target.getX()+ ", " + target.getY());
 		return this;
 	}
 	
@@ -79,36 +74,28 @@ public class Board implements Cloneable {
 			return ' ';
 		}
 		return p.toTile();
-		//return this.tiles[pointToIndex(source)];
 	}
 	
 	public Player getTileOwner(Point source){
-		//char t = getTile(source);
 		return owner[pointToIndex(source)];
 	}
 	
-	private void fillTiles(){
-		int i;
-		//for (i=0; i < SIZE * SIZE; i++){
-		//		tiles[i] = ' ';
-		//}
-	}
 	
-	public List<Pair<Board, Movement>> generateChildren(Player player){
-		List<Pair<Board, Movement>> children = new LinkedList<Pair<Board, Movement>>();
-		
+	public Iterable<Pair<Board, Movement>> generateChildren(Player player){
+		List<Iterable<Pair<Board, Movement>>> children = new ArrayList<Iterable<Pair<Board, Movement>>>(SIZE * SIZE);
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
 				Point source = Point.getInstance(j, i);
 				if (owner[pointToIndex(source)] == player){
-					//children.addAll(strategy.generateBoards(this, source));
-					strategy.injectBoards(this, source, children);
+					children.add(strategy.boardsForMove(this, source));
 				}
 			}
 		}
-				
-		return children;
+		
+		Chain<Pair<Board, Movement>> chain = new Chain<Pair<Board, Movement>>(children);
+		return chain;
 	}
+	
 	
 	public String toString(){
 		StringBuilder result = new StringBuilder();

@@ -20,7 +20,7 @@ public class TestLevelMinimax {
 	@Test
 	public void chooseAMove() {
 		Board board = starterBoard();
-		MinMaxTree minimax = new MinMaxTree(strategy, board, 5, computer, human);
+		MinMaxTree minimax = new MinMaxTree(strategy, board, 6, computer, human);
 		System.out.println("Best so far: " + minimax.getBestMove());
 	}
 	
