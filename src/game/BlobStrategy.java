@@ -132,18 +132,45 @@ public class BlobStrategy implements Strategy{
 
 	@Override
 	public Board move(Board board, Player player, Movement move) {
-			//evaluar que pasa con cada movimiento
 			board.putBlob(player, move.target);
-			board.deleteBlob(player, move.source);
 			
-			if (move.distance() == 2){
+			if (move.distance() > 1){
+				board.deleteBlob(player, move.source);
 				attack(player, board, move.target);
-			}			
+				refreshAdyacentTiles(board, move.target);
+			}
 			if (observer != null){
 				observer.onTileUpdate(move.source.getY(), move.source.getX(), board.getTile(move.source));
 				observer.onTileUpdate(move.target.getY(), move.target.getX(), board.getTile(move.target));
 			}
 			return board;
+	}
+	
+	private void refreshAdyacentTiles(Board board, Point source){
+		if (observer == null){
+			return;
+		}
+		
+		for (int dx = -1; dx < 2; dx++){
+			for (int dy = -1; dy < 2; dy++){
+				if (dx == 0 && dy == 0){
+					continue;
+				}
+				
+				int x = (int) (source.getX() + dx);
+				int y = (int) (source.getY() + dy);
+				
+				if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()){
+					continue;
+				}
+				
+				Point target = Point.getInstance(x, y);
+				
+				if (board.getTileOwner(target) != null){
+					observer.onTileUpdate(target.getY(), target.getX(), board.getTile(target));
+				}
+			}
+		}
 	}
 	
 	public Board startingBoard(){
