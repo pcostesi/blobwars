@@ -3,7 +3,7 @@ package game;
 public class Computer implements Player {
 
 	@Override
-	public boolean betterScore(int score, int localScore) {
+	public boolean betterScore(double score, double localScore) {
 		// TODO Auto-generated method stub
 		return localScore > score;
 	}

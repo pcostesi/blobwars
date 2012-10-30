@@ -8,7 +8,8 @@ import game.Strategy;
 
 import org.junit.Test;
 
-import structures.MinMaxTree;
+import ai.LevelMinimax;
+
 import structures.Point;
 
 public class TestLevelMinimax {
@@ -20,7 +21,7 @@ public class TestLevelMinimax {
 	@Test
 	public void chooseAMove() {
 		Board board = starterBoard();
-		MinMaxTree minimax = new MinMaxTree(strategy, board, 6, computer, human);
+		LevelMinimax minimax = new LevelMinimax(strategy, board, 6, human, computer);
 		System.out.println("Best so far: " + minimax.getBestMove());
 	}
 	

@@ -79,4 +79,12 @@ public class Game {
 		return players;
 	}
 	
+	public Computer getComputer(){
+		return computer;
+	}
+	
+	public Human getHuman(){
+		return human;
+	}
+	
 }
