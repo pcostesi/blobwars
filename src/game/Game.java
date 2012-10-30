@@ -72,19 +72,30 @@ public class Game {
 		return strategy;
 	}
 	
-	public Player[] getPlayers(){
-		Player[] players = new Player[2];
-		players[0] = computer;
-		players[1] = human;
-		return players;
-	}
-	
 	public Computer getComputer(){
 		return computer;
 	}
 	
 	public Human getHuman(){
 		return human;
+	}
+	
+	public Player getOpponent(Player player){
+		return player.equals(human) ? computer : human;
+	}
+	
+	public boolean hasWin(Player player){
+		int opponentTiles = this.board.countTilesForPlayer(getOpponent(player));
+		
+		if (opponentTiles == 0){
+			return true;
+		}
+		
+		if (!this.board.hasAvailableMoves(player)){
+			return this.board.countTilesForPlayer(player) > opponentTiles;
+		}
+		
+		return false;
 	}
 	
 }

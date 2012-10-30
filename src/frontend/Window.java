@@ -60,5 +60,10 @@ public class Window extends JFrame {
 		JOptionPane.showMessageDialog(this, "You have won!", "Win",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	public void showLose() {
+		JOptionPane.showMessageDialog(this, "You have lost!", "Lose",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 
 }

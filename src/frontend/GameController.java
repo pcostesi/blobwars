@@ -27,15 +27,21 @@ public class GameController{
 	public void play(Movement move) {
 		if (humanTurn){
 			humanTurn = !this.game.humanMove(move);
+			if (this.game.hasWin(game.getHuman())){
+				container.showWin();
+			}
 		}
 		
 		if (!humanTurn && !processingMove){
 			processingMove = true;
 			
-			
 			Minimax ai; 
 			ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
 			this.game.move(ai.getBestMove());
+			
+			if (this.game.hasWin(game.getComputer())){
+				container.showLose();
+			}
 			
 			processingMove = false;
 			humanTurn = true;
@@ -55,9 +61,4 @@ public class GameController{
 		container.setGameVisible();
 		game.start(this);
 	}
-
-	public void onWin() {
-		container.showWin();
-	}
-
 }
