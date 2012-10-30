@@ -1,6 +1,7 @@
 package frontend;
 
 import ioGame.IOGameController;
+import ioGame.Options;
 
 /**
  * Blob Wars application entry point.
@@ -13,12 +14,17 @@ public class BlobWars {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String mode = args[0].substring(1);
+		Options options = new Options(args);
 		
-		if (mode.equals("visual")){
+		if (!options.valid()){
+			System.out.println("Wrong arguments");
+			System.exit(0);
+		}
+		
+		if (options.visualMode()){
 			new GameController();
-		} else if (mode.equals("file")){
-			new IOGameController(args[1], args[3]);
+		} else if (options.consoleMode()){
+			new IOGameController(options.getFileName(), options.getPlayerNumber());
 		}
 	}
 }
