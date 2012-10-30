@@ -17,6 +17,11 @@ public class Game {
 		this.board = strategy.startingBoard();
 	}
 	
+	public Game(char[] charBoard){
+		this();
+		this.board = new Board(strategy, human, computer, charBoard);
+	}
+	
 	public Board getBoard(){
 		return board;
 	}

@@ -21,6 +21,21 @@ public class Board implements Cloneable {
 		this.owner = new Player[SIZE * SIZE];
 		player1 = pl1;
 		player2 = pl2;
+	}
+	
+	public Board(Strategy strategy, Player pl1, Player pl2, char[] charBoard){
+		this(strategy, pl1, pl2);
+		convertCharsToPlayers(charBoard);
+	}
+	
+	private void convertCharsToPlayers(char[] charBoard){
+		for (int i = 0; i < SIZE * SIZE; i++){
+			if (charBoard[i] == '1'){
+				this.owner[i] = player1;
+			} else if (charBoard[i] == '2') {
+				this.owner[i] = player2;
+			}
+		}
 		
 	}
 	
