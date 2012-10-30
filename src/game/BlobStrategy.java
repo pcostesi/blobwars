@@ -125,11 +125,11 @@ public class BlobStrategy implements Strategy{
 	}
 
 	@Override
+	/* ALWAYS for current player */
 	public double evaluateScore(Board board, Player p) {
 		double computerTiles = board.countTilesForPlayer(computer);
 		double humanTiles = board.countTilesForPlayer(human);
-		int sign = p == computer? 1 : -1;
-		return sign * board.countTilesForPlayer(p) / (computerTiles + humanTiles);
+		return board.countTilesForPlayer(p) / (computerTiles + humanTiles);
 	}
 
 	@Override
