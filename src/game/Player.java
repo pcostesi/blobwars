@@ -1,14 +1,15 @@
 package game;
 
-public interface Player {
+public abstract class Player {
 
-	abstract int initialScore();
+	public abstract int initialScore();
 
+	public abstract char toTile();
 
-	abstract char toTile();
-
-
-	abstract boolean betterScore(double score, double localScore);
+	public abstract boolean betterScore(double score, double localScore);
+	
+	public int hashCode(){
+		return toString().hashCode();
+	}
 
 }
-//int score = (level % 2 == 0) ? Integer.MAX_VALUE : Integer.MIN_VALUE;

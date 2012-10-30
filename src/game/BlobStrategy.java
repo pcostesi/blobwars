@@ -217,4 +217,25 @@ public class BlobStrategy implements Strategy{
 	public Iterable<Pair<Board, Movement>> boardsForMove(Board board, Point source) {
 		return new BlobStrategyIterable(board, source);
 	}
+	
+	public boolean hasAvailableMove(Board board, Point source){
+		for (int dx = -2; dx < 3; dx++){
+			for (int dy = -2; dy < 3; dy++){
+				if (dx == 0 && dy == 0){
+					continue;
+				}
+				int x = (int) (source.getX() + dx);
+				int y = (int) (source.getY() + dy);
+				
+				if (x < 0 || y < 0 || x >= board.getWidth() || y >= board.getHeight()){
+					continue;
+				}
+				Point target = Point.getInstance(x, y);
+				if (board.getTileOwner(target) == null){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

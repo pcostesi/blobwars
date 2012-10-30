@@ -1,6 +1,6 @@
 package game;
 
-public class Human implements Player{
+public class Human extends Player{
 
 	@Override
 	public boolean betterScore(double score, double localScore) {

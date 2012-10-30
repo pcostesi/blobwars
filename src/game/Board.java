@@ -71,15 +71,17 @@ public class Board implements Cloneable {
 		owner[pointToIndex(target)] = p;
 	}
 	
+	public void deleteTile(Point target){
+		owner[pointToIndex(target)] = null;
+	}
+	
 	public Board putBlob(Player player, Point target){
 		setTile(target, player);
-		
 		return this;
 	}
 	
 	 public Board deleteBlob(Player player, Point target){
-		//tiles[pointToIndex(target)] = ' ';
-		owner[pointToIndex(target)] = null;
+		deleteTile(target);
 		return this;
 	}
 	 
@@ -137,6 +139,24 @@ public class Board implements Cloneable {
 	
 	public Object clone(){
 		return new Board(this);
+	}
+	
+	public boolean hasAvailableMove(Point source){
+		return strategy.hasAvailableMove(this, source);
+	}
+
+	public boolean hasAvailableMoves(Player player){
+		for (int i = 0; i < SIZE; i++){
+			for (int j = 0; j < SIZE; j++){
+				Point source = Point.getInstance(j, i);
+				if (owner[pointToIndex(source)] == player){
+					if (hasAvailableMove(source)){
+						return true;
+					}
+				}
+			}
+		}	
+		return false;
 	}
 	
 }
