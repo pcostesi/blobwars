@@ -1,11 +1,9 @@
 package ioGame;
 
 
-import game.BlobStrategy;
 import game.Computer;
 import game.Game;
 import game.Human;
-import game.Player;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import structures.MinMaxTree;
+import ai.LevelMinimax;
+import ai.Minimax;
 
 
 public class IOGameController {
@@ -28,7 +27,7 @@ public class IOGameController {
 		this.game = new Game(charBoard);
 		System.out.println(this.game.getBoard());
 		//TODO: delete magic number
-		MinMaxTree ai = new MinMaxTree(game.getStrategy(), game.getBoard(), 4, game.getPlayers());
+		Minimax ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
 		System.out.println(ai.getBestMove());
 			
 	}
