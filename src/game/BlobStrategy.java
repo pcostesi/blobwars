@@ -1,6 +1,7 @@
 package game;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import structures.Pair;
 import structures.Point;
@@ -89,6 +90,9 @@ public class BlobStrategy implements Strategy{
 
 		@Override
 		public Pair<Board, Movement> next() {
+			if (!hasNext()){
+				throw new NoSuchElementException();
+			}
 			Movement move = this.moves[moveIdx++];
 			Board board = (Board) base.clone();
 			
@@ -109,6 +113,9 @@ public class BlobStrategy implements Strategy{
 	
 	@Override
 	public boolean isValid(Board board, Movement move) {
+		if (move == null || board == null){
+			return false;
+		}
 		Point source = move.source;
 		Point target = move.target;
 		

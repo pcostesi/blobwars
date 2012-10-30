@@ -43,6 +43,7 @@ public class LevelMinimax implements Minimax{
 	
 	private Node minimax(Board board, int level){
 		Movement bestMove = null;
+		boolean moved = false;
 		
 		Player player = getPlayerForLevel(level);
 		
@@ -50,10 +51,12 @@ public class LevelMinimax implements Minimax{
 			double score = strategy.evaluateScore(board, player);
 			return new Node(score, null);
 		}
+		
 		double score = player.initialScore(); 
 		
 		Node localScore;
 		for (Pair<Board, Movement> pair : board.generateChildren(player)){
+			moved = true;
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
 			localScore = minimax(localBoard, level + 1);
@@ -62,12 +65,16 @@ public class LevelMinimax implements Minimax{
 				bestMove = localMove;
 			}
 		}
+		if (!moved){
+			score = strategy.evaluateScore(board, player);
+		}
 		
 		return new Node(score, bestMove);
 	}
 	
 	public Movement getBestMove(){
 		Node bestMove = minimax(root, 0);
+		System.out.println(bestMove.move);
 		return bestMove.move;
 	}
 	

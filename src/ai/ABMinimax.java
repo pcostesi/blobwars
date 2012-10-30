@@ -4,44 +4,115 @@ import game.Board;
 import game.Computer;
 import game.Human;
 import game.Movement;
+import game.Strategy;
+import structures.Pair;
 
 public class ABMinimax implements Minimax {
 
 	private Board board;
 	private Computer computer;
 	private Human human;
+	private Strategy strategy;
+	private int levels = 1;
 
 	private class Node{
 		public double score;
 		public Movement move;
-		public double alpha;
-		public double beta;
 		public Node(double score, Movement move){
 			this.score = score;
 			this.move = move;
 		}
 	}
 	
-	public ABMinimax(Board board, Human human, Computer computer){
+	public ABMinimax(int levels, Strategy strategy, Board board, Human human, Computer computer){
 		this.board = board;
 		this.human = human;
 		this.computer = computer;
+		this.levels = levels;
+		this.strategy = strategy;
 	}
 	
 	
-	private Node min(int level){
-		return null;
+	
+	
+	
+	private Node min(int level, Board board, double alpha, double beta){
+		Movement bestMove = null;
+		boolean moved = false;
+		
+		if (level == 0){
+			return new Node(strategy.evaluateScore(board, computer), null);
+		}
+		
+		Node localScore;
+		for (Pair<Board, Movement> pair : board.generateChildren(computer)){
+			moved = true;
+			Board localBoard = pair.getFirst();
+			Movement localMove = pair.getSecond();
+			localScore = max(level - 1, localBoard, alpha, beta);
+			
+			if (computer.betterScore(beta, localScore.score)){
+				beta = localScore.score;
+				bestMove = localMove;
+			}
+			if (localScore.score <= alpha){
+				break;
+			}
+			
+		}
+		if (!moved){
+			beta = strategy.evaluateScore(board, computer);
+		}
+		
+		return new Node(beta , bestMove);
 	}
 	
-	private Node max(int level){
-		return null;
+	
+	
+	
+	
+	
+	
+	
+	
+	private Node max(int level, Board board, double alpha, double beta){
+		Movement bestMove = null;
+		boolean moved = false;
+		
+		if (level == 0){
+			return new Node(strategy.evaluateScore(board, computer), null);
+		}
+		
+		Node localScore;
+		for (Pair<Board, Movement> pair : board.generateChildren(computer)){
+			moved = true;
+			Board localBoard = pair.getFirst();
+			Movement localMove = pair.getSecond();
+			localScore = min(level - 1, localBoard, alpha, beta);
+			
+			if (computer.betterScore(alpha, localScore.score)){
+				alpha = localScore.score;
+				bestMove = localMove;
+			}
+			if (localScore.score >= beta){
+				break;
+			}
+			
+		}
+		if (!moved){
+			alpha = strategy.evaluateScore(board, computer);
+		}
+		
+		return new Node(alpha , bestMove);
 	}
+	
+	
 	
 	@Override
 	public Movement getBestMove() {
-		// TODO Auto-generated method stub
-		Node root = min(0);
-		return null;
+		Node root = max(levels, board, computer.initialScore(), human.initialScore());
+		System.out.println(root.move);
+		return root.move;
 	}
 
 }
