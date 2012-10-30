@@ -2,7 +2,6 @@ package frontend;
 
 import game.Game;
 import game.Movement;
-import structures.Point;
 import ai.LevelMinimax;
 import ai.Minimax;
 
@@ -11,6 +10,7 @@ public class GameController{
 	private Game game;
 	private Window container;
 	boolean humanTurn;
+	boolean processingMove;
 
 	public GameController() {
 		initialize();
@@ -20,19 +20,26 @@ public class GameController{
 		container = new Window(this);
 		game = new Game();
 		humanTurn = true;
+		processingMove = false;
 		startGame();
 	}
 
-	public void move(int sourceRow, int sourceColumn, int targetRow, int targetColumn) {
-		if (!humanTurn){
-			return;
+	public void play(Movement move) {
+		if (humanTurn){
+			humanTurn = !this.game.humanMove(move);
 		}
 		
-		Point source = Point.getInstance(sourceColumn, sourceRow);
-		Point target = Point.getInstance(targetColumn, targetRow);
-		Movement move = new Movement(source, target);
-		
-		humanTurn = !this.game.humanMove(move);
+		if (!humanTurn && !processingMove){
+			processingMove = true;
+			
+			
+			Minimax ai; 
+			ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
+			this.game.move(ai.getBestMove());
+			
+			processingMove = false;
+			humanTurn = true;
+		}
 	}
 
 	public void onTileUpdate(int row, int column, char player) {
@@ -47,25 +54,6 @@ public class GameController{
 		container.setGame(game.getBoardHeight(), game.getBoardWidth());
 		container.setGameVisible();
 		game.start(this);
-		
-		boolean win = false;
-		Minimax ai; 
-	
-		while (!win){
-			if (humanTurn) {
-				
-				try {
-				    Thread.sleep(1000);
-				} catch(InterruptedException ex) {
-				    Thread.currentThread().interrupt();
-				}
-				
-			} else {
-				ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
-				this.game.move(ai.getBestMove());
-				humanTurn = true;
-			}
-		}
 	}
 
 	public void onWin() {
