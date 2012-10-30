@@ -1,5 +1,6 @@
 package frontend;
 
+import game.Movement;
 import gui.BoardPanel;
 import gui.BoardPanelListener;
 import gui.ImageUtils;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import structures.Point;
 
 
 public class GamePanel extends JPanel implements View {
@@ -71,9 +74,11 @@ public class GamePanel extends JPanel implements View {
 			public void cellDragged(int sourceRow, int sourceColumn,
 					int targetRow, int targetColumn) {
 				
-				System.out.println("drag");
-				controller.move(sourceRow, sourceColumn, targetRow,
-						targetColumn);
+				Point source = Point.getInstance(sourceColumn, sourceRow);
+				Point target = Point.getInstance(targetColumn, targetRow);
+				Movement move = new Movement(source, target);
+	
+				controller.play(move);
 			}
 
 			@Override
