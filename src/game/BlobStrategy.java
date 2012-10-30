@@ -104,8 +104,6 @@ public class BlobStrategy implements Strategy{
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
-		
-		
 	}
 	
 	
@@ -136,14 +134,16 @@ public class BlobStrategy implements Strategy{
 	public Board move(Board board, Player player, Movement move) {
 			board.putBlob(player, move.target);
 			
-			if (move.distance() > 1){
+			if (move.distance() == 2){
 				board.deleteBlob(player, move.source);
-				attack(player, board, move.target);
-				refreshAdyacentTiles(board, move.target);
 			}
+			
+			attack(player, board, move.target);
+			
 			if (observer != null){
 				observer.onTileUpdate(move.source.getY(), move.source.getX(), board.getTile(move.source));
 				observer.onTileUpdate(move.target.getY(), move.target.getX(), board.getTile(move.target));
+				refreshAdyacentTiles(board, move.target);
 			}
 			return board;
 	}
