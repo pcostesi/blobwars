@@ -2,8 +2,9 @@ package frontend;
 
 import game.Game;
 import game.Movement;
-import structures.MinMaxTree;
 import structures.Point;
+import ai.LevelMinimax;
+import ai.Minimax;
 
 public class GameController{
 
@@ -48,7 +49,7 @@ public class GameController{
 		game.start(this);
 		
 		boolean win = false;
-		MinMaxTree ai; 
+		Minimax ai; 
 	
 		while (!win){
 			if (humanTurn) {
@@ -60,7 +61,7 @@ public class GameController{
 				}
 				
 			} else {
-				ai = new MinMaxTree(game.getStrategy(), game.getBoard(), 4, game.getPlayers());
+				ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
 				this.game.move(ai.getBestMove());
 				humanTurn = true;
 			}

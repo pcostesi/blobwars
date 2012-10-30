@@ -125,9 +125,11 @@ public class BlobStrategy implements Strategy{
 	}
 
 	@Override
-	public int evaluateScore(Board board, Player p) {
-		int tiles = board.countTilesForPlayer(computer) - board.countTilesForPlayer(human);
-		return p == computer ? tiles : -tiles;
+	public double evaluateScore(Board board, Player p) {
+		double computerTiles = board.countTilesForPlayer(computer);
+		double humanTiles = board.countTilesForPlayer(human);
+		int sign = p == computer? 1 : -1;
+		return sign * board.countTilesForPlayer(p) / (computerTiles + humanTiles);
 	}
 
 	@Override
