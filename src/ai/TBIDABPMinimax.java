@@ -22,7 +22,8 @@ public class TBIDABPMinimax implements Minimax {
 	private int millis;
 
 	private Thread worker;
-	private Thread clock;	
+	private Thread clock;
+	private ABPMMWorker task;
 	
 	public TBIDABPMinimax(int millis, Strategy strategy, Board board,
 			Human human, Computer computer) {
@@ -40,9 +41,8 @@ public class TBIDABPMinimax implements Minimax {
 	
 	private synchronized void stopTime(){
 		this.hasTime = false;
-//		if (worker != null){
-//			worker.interrupt();
-//		}
+		task.poison();
+		worker.interrupt();
 		this.notify();
 	}
 	
@@ -99,7 +99,9 @@ public class TBIDABPMinimax implements Minimax {
 
 		try {
 			while (hasTime){
-				worker = new Thread(new ABPMMWorker(level, strategy, board, human, computer));
+				task = new ABPMMWorker(level, strategy, board, human, computer);
+				worker = new Thread(task);
+				worker.setDaemon(true);
 				worker.start();
 				this.wait();
 				level++;
