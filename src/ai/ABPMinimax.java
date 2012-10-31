@@ -4,10 +4,11 @@ import game.Board;
 import game.Computer;
 import game.Human;
 import game.Movement;
+import game.Player;
 import game.Strategy;
 import structures.Pair;
 
-public class ABMinimax implements Minimax {
+public class ABPMinimax implements Minimax {
 
 	private Board board;
 	private Computer computer;
@@ -24,15 +25,13 @@ public class ABMinimax implements Minimax {
 		}
 	}
 	
-	public ABMinimax(int levels, Strategy strategy, Board board, Human human, Computer computer){
+	public ABPMinimax(int levels, Strategy strategy, Board board, Human human, Computer computer){
 		this.board = board;
 		this.human = human;
 		this.computer = computer;
 		this.levels = levels;
 		this.strategy = strategy;
 	}
-	
-	
 	
 	
 	
@@ -70,11 +69,6 @@ public class ABMinimax implements Minimax {
 	
 	
 	
-	
-	
-	
-	
-	
 	private Node max(int level, Board board, double alpha, double beta){
 		Movement bestMove = null;
 		boolean moved = false;
@@ -94,6 +88,7 @@ public class ABMinimax implements Minimax {
 				alpha = localScore.score;
 				bestMove = localMove;
 			}
+			
 			if (localScore.score >= beta){
 				break;
 			}
@@ -107,11 +102,9 @@ public class ABMinimax implements Minimax {
 	}
 	
 	
-	
 	@Override
 	public Movement getBestMove() {
 		Node root = max(levels, board, computer.initialScore(), human.initialScore());
-		System.out.println(root.move);
 		return root.move;
 	}
 
