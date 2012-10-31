@@ -1,9 +1,8 @@
 package ioGame;
 
-import game.Computer;
 import game.Game;
-import game.Human;
 import game.Movement;
+import game.Player;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,36 +20,37 @@ public class IOGameController {
 	public IOGameController(String fileName, String playerNumber){
 		char[] charBoard = openCharBoard(fileName);
 		
-		if (playerNumber.equals("2")){
-			invertPlayers(charBoard);
-		}
-		
+		Player player;
 		this.game = new Game(charBoard);
-		
+	
+		if (playerNumber.equals("1")){
+			player = game.getHuman();
+		} else {
+			player = game.getComputer();
+		}
+	
+		start(player);
+
+		System.out.println(this.game.getBoard());
+	
+	}
+
+
+	
+	private void start(Player player){
 		System.out.println(this.game.getBoard());
 		//TODO: delete magic number
-		Minimax ai = new LMinimax(4, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
-		System.out.println(ai.getBestMove());
-		
-		
+		Minimax ai = new LMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
+
 		Movement move = ai.getBestMove();
+		
+		game.move(move); //borrar
+		
 		
 		if (move == null){
 			System.out.println("PASS");
 		} else {
-			System.out.println(ai.getBestMove());
-		}
-			
-	}
-
-	
-	private void invertPlayers(char[] charBoard){
-		for (int i = 0; i < charBoard.length; i++){
-			if (charBoard[i] == '1'){
-				charBoard[i] = '2';
-			} else if (charBoard[i] == '2') {
-				charBoard[i] = '1';
-			}
+			System.out.println(" juga:" + ai.getBestMove());
 		}
 	}
 	
@@ -58,12 +58,12 @@ public class IOGameController {
 		try {
 			BufferedReader buffer = new BufferedReader(new FileReader(path));
 			
-			char[] file = new char[game.getBoardHeight() * game.getBoardWidth()];
+			char[] charBoard = new char[Game.getBoardHeight() * Game.getBoardWidth()];
 			
-			buffer.read(file);
+			buffer.read(charBoard);
 			buffer.close();
-			
-			return file;
+		System.out.println(charBoard);
+			return charBoard;
 			
 		} catch (FileNotFoundException e) {
 			return null;
