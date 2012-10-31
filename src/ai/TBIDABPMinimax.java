@@ -8,10 +8,11 @@ import game.Strategy;
 public class TBIDABPMinimax implements Minimax {
 
 	/*
-	 * Time Bound, Iterative Deepening, Alpha-Beta Prunning MiniMax 
-	 * We've created a monster.
-	 * */
-	
+	 * 
+	 * Time Bound, Iterative Deepening, Alpha-Beta Prunning MiniMax We've
+	 * created a monster.
+	 */
+
 	private Movement solution;
 	private Strategy strategy;
 	private Board board;
@@ -23,7 +24,7 @@ public class TBIDABPMinimax implements Minimax {
 	private Thread worker;
 	private Thread clock;
 	private ABPMMWorker task;
-	
+
 	public TBIDABPMinimax(int millis, Strategy strategy, Board board,
 			Player maximizer, Player minimizer) {
 		this.millis = millis;
@@ -33,41 +34,41 @@ public class TBIDABPMinimax implements Minimax {
 		this.minimizer = minimizer;
 	}
 
-	private synchronized void postSolution(Movement move){
-		if (move != null){
+	private synchronized void postSolution(Movement move) {
+		if (move != null) {
 			this.solution = move;
 		}
 		this.notify();
 	}
-	
-	private synchronized void stopTime(){
+
+	private synchronized void stopTime() {
 		this.hasTime = false;
 		task.poison();
 		worker.interrupt();
 		this.notify();
 	}
-	
-	private class ABPMMWorker extends ABPMinimax implements Runnable{
+
+	private class ABPMMWorker extends ABPMinimax implements Runnable {
 
 		public ABPMMWorker(int levels, Strategy strategy, Board board,
 				Player maximizer, Player minimizer) {
 			super(levels, strategy, board, maximizer, minimizer);
 		}
 
-		@Override
 		public void run() {
-			postSolution(getBestMove());			
+			postSolution(getBestMove());
 		}
-		
+
 	}
-	
-	private class Clock extends Thread implements Runnable{
+
+	private class Clock extends Thread implements Runnable {
 
 		private int millis;
-		
-		public Clock(int millis){
+
+		public Clock(int millis) {
 			this.millis = millis;
 		}
+
 		@Override
 		public void run() {
 			try {
@@ -76,33 +77,32 @@ public class TBIDABPMinimax implements Minimax {
 			} catch (InterruptedException e) {
 			}
 		}
-		
+
 	}
-	
-	@Override
+
 	public synchronized Movement getBestMove() {
 		/*
-		 * We spawn two threads:
-		 * - Ye Olde ABPMinimax (with a custom height progression).
-		 * - An alarm thread.
+		 * We spawn two threads: - Ye Olde ABPMinimax (with a custom height
+		 * progression). - An alarm thread.
 		 * 
 		 * When the alarm thread rings it signals this thread, which promptly
 		 * kills the ABPMinimax worker (which is a service thread, unjoined).
 		 * 
-		 * Every time the worker returns it sets a solution (Movement) in
-		 * this thread. This happens inside a while(flag) loop that increments
-		 * the height for each run.
-		 * */
+		 * Every time the worker returns it sets a solution (Movement) in this
+		 * thread. This happens inside a while(flag) loop that increments the
+		 * height for each run.
+		 */
 		int level = 1;
-		
+
 		hasTime = true;
 		solution = null;
 		clock = new Clock(millis);
 		clock.start();
 
 		try {
-			while (hasTime){
-				task = new ABPMMWorker(level, strategy, board, maximizer, minimizer);
+			while (hasTime) {
+				task = new ABPMMWorker(level, strategy, board, maximizer,
+						minimizer);
 				worker = new Thread(task);
 				worker.setDaemon(true);
 				worker.start();
@@ -112,13 +112,12 @@ public class TBIDABPMinimax implements Minimax {
 			clock.join();
 		} catch (InterruptedException e) {
 		}
-		if (solution == null && board.hasAvailableMoves(maximizer)){
+		if (solution == null && board.hasAvailableMoves(maximizer)) {
 			throw new MinimaxTimeoutException(millis, board, level);
 		}
 		return solution;
 	}
 
-	@Override
 	public void setBoard(Board board) {
 		this.board = board;
 	}

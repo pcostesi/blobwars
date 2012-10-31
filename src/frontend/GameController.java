@@ -2,20 +2,32 @@ package frontend;
 
 import game.Game;
 import game.Movement;
+import ioGame.Options;
 import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
-import ai.TBIDABPMinimax;
 
-public class GameController{
+public class GameController {
 
 	private Game game;
 	private Window container;
 	boolean humanTurn;
 	boolean processingMove;
 
-	public GameController() {
+	private Options options;
+	private Minimax ai;
+
+	public GameController(Options options) {
+		this.options = options;
 		initialize();
+
+		if (options.prune()) {
+			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(),
+					game.getComputer(), game.getHuman());
+		} else {
+			ai = new LMinimax(4, game.getStrategy(), game.getBoard(),
+					game.getComputer(), game.getHuman());
+		}
 	}
 
 	private void initialize() {
@@ -27,24 +39,23 @@ public class GameController{
 	}
 
 	public void play(Movement move) {
-		if (humanTurn){
+		if (humanTurn) {
 			humanTurn = !this.game.humanMove(move);
-			if (this.game.hasWin(game.getHuman())){
+			if (this.game.hasWin(game.getHuman())) {
 				container.showWin();
 			}
 		}
-		
-		if (!humanTurn && !processingMove){
+
+		if (!humanTurn && !processingMove) {
 			processingMove = true;
-			
-			Minimax ai; 
-			ai = new TBIDABPMinimax(5000, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
+
+			ai.setBoard(game.getBoard());
 			this.game.move(ai.getBestMove());
-			
-			if (this.game.hasWin(game.getComputer())){
+
+			if (this.game.hasWin(game.getComputer())) {
 				container.showLose();
 			}
-			
+
 			processingMove = false;
 			humanTurn = true;
 		}

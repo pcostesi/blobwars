@@ -15,16 +15,18 @@ public class BlobWars {
 	 */
 	public static void main(String[] args) {
 		Options options = new Options(args);
-		
-		if (!options.valid()){
+
+		if (!options.valid()) {
 			System.out.println("Wrong arguments");
 			System.exit(0);
 		}
-		
-		if (options.visualMode()){
-			new GameController();
-		} else if (options.consoleMode()){
-			new IOGameController(options.getFileName(), options.getPlayerNumber(), options.prune());
+
+		if (options.visualMode()) {
+
+			new GameController(options);
+		} else if (options.consoleMode()) {
+			new IOGameController(options.getFileName(),
+					options.getPlayerNumber(), options);
 		}
 	}
 }
