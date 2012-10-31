@@ -19,7 +19,7 @@ public class IOGameController {
 	Game game;
 	Minimax ai;
 	
-	public IOGameController(String fileName, String playerNumber, boolean prune){
+	public IOGameController(String fileName, String playerNumber, Options options){
 		char[] charBoard = openCharBoard(fileName);
 		
 		Player player;
@@ -31,7 +31,7 @@ public class IOGameController {
 			player = game.getComputer();
 		}
 		ai = new LMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
-		if (prune){
+		if (options.prune()){
 			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
 		}
 		start(player);

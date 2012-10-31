@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 
 import structures.Point;
 
-
 public class GamePanel extends JPanel implements View {
 
 	private static final int CELL_SIZE = 30;
@@ -54,7 +53,7 @@ public class GamePanel extends JPanel implements View {
 							"Unable to load all resources. You may continue to play the game, but some images may not show.",
 							"Resource error", JOptionPane.WARNING_MESSAGE);
 		}
-		
+
 		initializeBoard();
 		initializeStatusPanel();
 		loadPlayerAssets();
@@ -73,15 +72,14 @@ public class GamePanel extends JPanel implements View {
 
 			public void cellDragged(int sourceRow, int sourceColumn,
 					int targetRow, int targetColumn) {
-				
+
 				Point source = Point.getInstance(sourceColumn, sourceRow);
 				Point target = Point.getInstance(targetColumn, targetRow);
 				Movement move = new Movement(source, target);
-	
+
 				controller.play(move);
 			}
 
-			@Override
 			public void cellClicked(int row, int column) {
 				System.out.println("click");
 			}
@@ -97,40 +95,39 @@ public class GamePanel extends JPanel implements View {
 		statusPanel.setOpaque(false);
 		add(statusPanel, BorderLayout.SOUTH);
 	}
-	
-	private void loadPlayerAssets(){
+
+	private void loadPlayerAssets() {
 		try {
 			this.humanBlob = ImageUtils.loadImage("resources/blob_human.png");
-			this.computerBlob = ImageUtils.loadImage("resources/blob_computer.png");
+			this.computerBlob = ImageUtils
+					.loadImage("resources/blob_computer.png");
 		} catch (IOException e) {
 		}
 	}
 
 	public void updateTile(int row, int column, char player) {
 		boardPanel.clearImage(row, column);
-		
-		if (player == 'h'){ 
+
+		if (player == 'h') {
 			boardPanel.appendImage(row, column, humanBlob);
-		} else if (player == 'c'){
+		} else if (player == 'c') {
 			boardPanel.appendImage(row, column, computerBlob);
 		}
-		
+
 		boardPanel.repaint();
 	}
-	
-public void clearTile(int row, int column) {
+
+	public void clearTile(int row, int column) {
 		boardPanel.clearImage(row, column);
 		boardPanel.repaint();
-}
-
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		if (background != null) {			
+		if (background != null) {
 			g.drawImage(background, 0, 0, null);
 		}
 		paintComponents(g);
 	}
-
 
 }

@@ -22,9 +22,9 @@ public class BlobWars {
 		}
 		
 		if (options.visualMode()){
-			new GameController();
+			new GameController(options);
 		} else if (options.consoleMode()){
-			new IOGameController(options.getFileName(), options.getPlayerNumber(), options.prune());
+			new IOGameController(options.getFileName(), options.getPlayerNumber(), options);
 		}
 	}
 }

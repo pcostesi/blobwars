@@ -2,10 +2,10 @@ package frontend;
 
 import game.Game;
 import game.Movement;
+import ioGame.Options;
 import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
-import ai.TBIDABPMinimax;
 
 public class GameController{
 
@@ -13,9 +13,18 @@ public class GameController{
 	private Window container;
 	boolean humanTurn;
 	boolean processingMove;
+	private Options options;
+	private Minimax ai;
 
-	public GameController() {
+	public GameController(Options options) {
+		this.options = options;
 		initialize();
+		
+		if (options.prune()){
+			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
+		} else {
+			ai = new LMinimax(4, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
+		}
 	}
 
 	private void initialize() {
@@ -37,8 +46,7 @@ public class GameController{
 		if (!humanTurn && !processingMove){
 			processingMove = true;
 			
-			Minimax ai; 
-			ai = new TBIDABPMinimax(5000, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
+			ai.setBoard(game.getBoard());
 			this.game.move(ai.getBestMove());
 			
 			if (this.game.hasWin(game.getComputer())){

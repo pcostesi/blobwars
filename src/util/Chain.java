@@ -34,7 +34,6 @@ public class Chain<E> implements Iterable<E>{
 		
 		}
 		
-		@Override
 		public boolean hasNext() {
 			while (idx < lastIdx && !iterators.get(idx).hasNext()){
 				idx++;
@@ -47,7 +46,6 @@ public class Chain<E> implements Iterable<E>{
 			return false;
 		}
 	
-		@Override
 		public E next() {
 			if (!hasNext()){
 				throw new NoSuchElementException();
@@ -55,14 +53,12 @@ public class Chain<E> implements Iterable<E>{
 			return iterators.get(idx).next();
 		}
 	
-		@Override
 		public void remove() {
 			iterators.get(idx).remove();
 		}
 	
 	}
 
-	@Override
 	public Iterator<E> iterator() {
 		return new ChainIterator();
 	}
