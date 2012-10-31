@@ -10,8 +10,7 @@ import util.Chain;
 
 public class Board implements Cloneable {
 	protected static final int SIZE = 8;
-	private Strategy strategy; 
-	private int tiles = 0;
+	private Strategy strategy;
 	
 	Player[] owner;
 	private Player player1;
@@ -50,6 +49,12 @@ public class Board implements Cloneable {
 		return base;
 	}
 	public int countTiles(){
+		int tiles = 0;
+		for (int i = 0; i < SIZE * SIZE; i++){
+			if (owner[i] != null){
+				tiles++;
+			}
+		}
 		return tiles;
 	}
 	
@@ -73,12 +78,10 @@ public class Board implements Cloneable {
 	
 	//ATTENTION only method that modifies board
 	public void setTile(Point target, Player p){
-		tiles++;
 		owner[pointToIndex(target)] = p;
 	}
 	
 	public void deleteTile(Point target){
-		tiles--;
 		owner[pointToIndex(target)] = null;
 	}
 	
@@ -123,6 +126,11 @@ public class Board implements Cloneable {
 	
 	public String toString(){
 		StringBuilder result = new StringBuilder();
+
+		for (int z = 0; z < SIZE; z++){
+			result.append("+---");
+		}
+		result.append("+").append("\n");
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
 				char tile = ' ';

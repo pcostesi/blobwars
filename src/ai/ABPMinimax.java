@@ -1,8 +1,6 @@
 package ai;
 
 import game.Board;
-import game.Computer;
-import game.Human;
 import game.Movement;
 import game.Player;
 import game.Strategy;
@@ -11,8 +9,8 @@ import structures.Pair;
 public class ABPMinimax implements Minimax {
 
 	private Board board;
-	private Computer computer;
-	private Human human;
+	private Player maximizer;
+	private Player minimizer;
 	private Strategy strategy;
 	private int levels = 1;
 	private boolean poison = false;
@@ -26,17 +24,21 @@ public class ABPMinimax implements Minimax {
 		}
 	}
 	
-	public ABPMinimax(int levels, Strategy strategy, Board board, Human human, Computer computer){
+	public ABPMinimax(int levels, Strategy strategy, Board board, Player maximizer, Player minimizer){
 		this.board = board;
-		this.human = human;
-		this.computer = computer;
+		this.maximizer = maximizer;
+		this.minimizer = minimizer;
 		this.levels = levels;
 		this.strategy = strategy;
 	}
 	
+	private Player cycle(Player p){
+		if (p == maximizer)
+			return minimizer;
+		return maximizer;
+	}
 	
-	
-	private Node min(int level, Board board, double alpha, double beta) throws InterruptedException{
+	private Node min(int level, Board board, double alpha, double beta, Player player) throws InterruptedException{
 		if (poison){
 			throw new InterruptedException();
 		}
@@ -44,16 +46,16 @@ public class ABPMinimax implements Minimax {
 		boolean moved = false;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, human), null);
+			return new Node(strategy.evaluateScore(board, player), null);
 		}
 		
 		Node localScore;
-		for (Pair<Board, Movement> pair : board.generateChildren(human)){
+		for (Pair<Board, Movement> pair : board.generateChildren(player)){
 			moved = true;
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
-			localScore = max(level - 1, localBoard, alpha, beta);
-			if (human.betterScore(beta, localScore.score)){
+			localScore = max(level - 1, localBoard, alpha, beta, cycle(player));
+			if (beta > localScore.score){
 				beta = localScore.score;
 				bestMove = localMove;
 			}
@@ -63,7 +65,7 @@ public class ABPMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			beta = strategy.evaluateScore(board, human);
+			beta = strategy.evaluateScore(board, player);
 		}
 		
 		return new Node(beta , bestMove);
@@ -72,7 +74,7 @@ public class ABPMinimax implements Minimax {
 	
 	
 	
-	private Node max(int level, Board board, double alpha, double beta) throws InterruptedException{
+	private Node max(int level, Board board, double alpha, double beta, Player player) throws InterruptedException{
 		if (poison){
 			throw new InterruptedException();
 		}
@@ -80,17 +82,17 @@ public class ABPMinimax implements Minimax {
 		boolean moved = false;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, computer), null);
+			return new Node(strategy.evaluateScore(board, player), null);
 		}
 		
 		Node localScore;
-		for (Pair<Board, Movement> pair : board.generateChildren(computer)){
+		for (Pair<Board, Movement> pair : board.generateChildren(player)){
 			moved = true;
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
-			localScore = min(level - 1, localBoard, alpha, beta);
+			localScore = min(level - 1, localBoard, alpha, beta, cycle(player));
 			
-			if (computer.betterScore(alpha, localScore.score)){
+			if (alpha < localScore.score){
 				alpha = localScore.score;
 				bestMove = localMove;
 			}
@@ -101,7 +103,7 @@ public class ABPMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			alpha = strategy.evaluateScore(board, computer);
+			alpha = strategy.evaluateScore(board, player);
 		}
 		
 		return new Node(alpha , bestMove);
@@ -114,12 +116,20 @@ public class ABPMinimax implements Minimax {
 	@Override
 	public Movement getBestMove() {
 		Node root;
+		poison = false;
 		try {
-			root = max(levels, board, computer.initialScore(), human.initialScore());
+			root = max(levels, board, Integer.MIN_VALUE , Integer.MAX_VALUE, maximizer);
 			return root.move;
 		} catch (InterruptedException e) {
 		}
 		return null;
+	}
+
+
+
+	@Override
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 }
