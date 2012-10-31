@@ -80,10 +80,18 @@ public class TestMinimaxGetsBetterWithMoreLevels{
 	}
 	
 	@Test
-	public void LevelMinimax(){
+	public void testLMinimax(){
 		Board board = game.getBoard();
 		minimaxI = new LMinimax(4, strategy, board, computer, human);
 		minimaxS = new LMinimax(2, strategy, board, human, computer);
+		Assert.assertEquals(true, testMinimax());
+	}
+	
+	@Test
+	public void testTBIDABPMMvsABPMM(){
+		Board board = game.getBoard();
+		minimaxI = new TBIDABPMinimax(2000, strategy, board, computer, human);
+		minimaxS = new ABPMinimax(3, strategy, board, human, computer);
 		Assert.assertEquals(true, testMinimax());
 	}
 	

@@ -46,7 +46,7 @@ public class ABPMinimax implements Minimax {
 		boolean moved = false;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, player), null);
+			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 		
 		Node localScore;
@@ -65,7 +65,7 @@ public class ABPMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			beta = strategy.evaluateScore(board, player);
+			beta = strategy.evaluateScore(board, maximizer);
 		}
 		
 		return new Node(beta , bestMove);
@@ -82,7 +82,7 @@ public class ABPMinimax implements Minimax {
 		boolean moved = false;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, player), null);
+			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 		
 		Node localScore;
@@ -103,7 +103,7 @@ public class ABPMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			alpha = strategy.evaluateScore(board, player);
+			alpha = strategy.evaluateScore(board, maximizer);
 		}
 		
 		return new Node(alpha , bestMove);

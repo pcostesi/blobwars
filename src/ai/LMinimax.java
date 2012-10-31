@@ -46,7 +46,7 @@ public class LMinimax implements Minimax {
 		boolean moved = false;
 		double score = player == maximizer? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, player), null);
+			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 		
 		Node localScore;
@@ -61,7 +61,7 @@ public class LMinimax implements Minimax {
 			}
 		}
 		if (!moved){
-			score = strategy.evaluateScore(board, player);
+			score = strategy.evaluateScore(board, maximizer);
 		}
 		
 		return new Node(score , bestMove);
@@ -80,7 +80,7 @@ public class LMinimax implements Minimax {
 		double score = player == maximizer? Integer.MIN_VALUE : Integer.MAX_VALUE;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, player), null);
+			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 		
 		Node localScore;
@@ -98,7 +98,7 @@ public class LMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			score = strategy.evaluateScore(board, player);
+			score = strategy.evaluateScore(board, maximizer);
 		}
 		
 		return new Node(score , bestMove);
