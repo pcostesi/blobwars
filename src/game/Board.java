@@ -48,6 +48,20 @@ public class Board implements Cloneable {
 		}
 		return base;
 	}
+	
+	public int gradientForPlayer(Player p){
+		int base = 0;
+		for (Player cur : owner){
+			if (cur == null) continue;
+			if (cur.equals(p)){
+				base++;
+			} else {
+				base--;
+			}
+		}
+		return base;
+	}
+	
 	public int countTiles(){
 		int tiles = 0;
 		for (int i = 0; i < SIZE * SIZE; i++){
