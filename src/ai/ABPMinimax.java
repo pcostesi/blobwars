@@ -15,6 +15,7 @@ public class ABPMinimax implements Minimax {
 	private Human human;
 	private Strategy strategy;
 	private int levels = 1;
+	private boolean poison = false;
 
 	private class Node{
 		public double score;
@@ -35,7 +36,10 @@ public class ABPMinimax implements Minimax {
 	
 	
 	
-	private Node min(int level, Board board, double alpha, double beta){
+	private Node min(int level, Board board, double alpha, double beta) throws InterruptedException{
+		if (poison){
+			throw new InterruptedException();
+		}
 		Movement bestMove = null;
 		boolean moved = false;
 		
@@ -49,7 +53,6 @@ public class ABPMinimax implements Minimax {
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
 			localScore = max(level - 1, localBoard, alpha, beta);
-			
 			if (human.betterScore(beta, localScore.score)){
 				beta = localScore.score;
 				bestMove = localMove;
@@ -69,7 +72,10 @@ public class ABPMinimax implements Minimax {
 	
 	
 	
-	private Node max(int level, Board board, double alpha, double beta){
+	private Node max(int level, Board board, double alpha, double beta) throws InterruptedException{
+		if (poison){
+			throw new InterruptedException();
+		}
 		Movement bestMove = null;
 		boolean moved = false;
 		
@@ -101,11 +107,19 @@ public class ABPMinimax implements Minimax {
 		return new Node(alpha , bestMove);
 	}
 	
+	public synchronized void poison(){
+		this.poison = true;
+	}
 	
 	@Override
 	public Movement getBestMove() {
-		Node root = max(levels, board, computer.initialScore(), human.initialScore());
-		return root.move;
+		Node root;
+		try {
+			root = max(levels, board, computer.initialScore(), human.initialScore());
+			return root.move;
+		} catch (InterruptedException e) {
+		}
+		return null;
 	}
 
 }
