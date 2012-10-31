@@ -87,12 +87,5 @@ public class TestMinimaxGetsBetterWithMoreLevels{
 		Assert.assertEquals(true, testMinimax());
 	}
 	
-	@Test
-	public void testTBIDABPMMvsABPMM(){
-		Board board = game.getBoard();
-		minimaxI = new TBIDABPMinimax(2000, strategy, board, computer, human);
-		minimaxS = new ABPMinimax(3, strategy, board, human, computer);
-		Assert.assertEquals(true, testMinimax());
-	}
 	
 }
