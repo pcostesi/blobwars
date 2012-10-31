@@ -5,6 +5,7 @@ import game.Movement;
 import ai.ABPMinimax;
 import ai.LevelMinimax;
 import ai.Minimax;
+import ai.TBIDABPMinimax;
 
 public class GameController{
 
@@ -39,6 +40,7 @@ public class GameController{
 			Minimax ai; 
 			ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
 			ai = new ABPMinimax(5, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
+			ai = new TBIDABPMinimax(5000, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
 			this.game.move(ai.getBestMove());
 			
 			if (this.game.hasWin(game.getComputer())){
