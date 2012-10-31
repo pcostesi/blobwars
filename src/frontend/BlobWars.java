@@ -24,7 +24,7 @@ public class BlobWars {
 		if (options.visualMode()){
 			new GameController();
 		} else if (options.consoleMode()){
-			new IOGameController(options.getFileName(), options.getPlayerNumber());
+			new IOGameController(options.getFileName(), options.getPlayerNumber(), options.prune());
 		}
 	}
 }

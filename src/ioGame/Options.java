@@ -46,6 +46,10 @@ public class Options {
 		return true;
 	}
 	
+	public boolean prune(){
+		return args[args.length - 1] == "-prune";
+	}
+	
 	public boolean visualMode(){
 		return mode != null && mode.equals("visual");
 	}

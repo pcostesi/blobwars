@@ -10,14 +10,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
 
 public class IOGameController {
 	File file;
 	Game game;
+	Minimax ai;
 	
-	public IOGameController(String fileName, String playerNumber){
+	public IOGameController(String fileName, String playerNumber, boolean prune){
 		char[] charBoard = openCharBoard(fileName);
 		
 		Player player;
@@ -28,7 +30,10 @@ public class IOGameController {
 		} else {
 			player = game.getComputer();
 		}
-	
+		ai = new LMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
+		if (prune){
+			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
+		}
 		start(player);
 
 		System.out.println(this.game.getBoard());
@@ -39,8 +44,6 @@ public class IOGameController {
 	
 	private void start(Player player){
 		System.out.println(this.game.getBoard());
-		//TODO: delete magic number
-		Minimax ai = new LMinimax(4, game.getStrategy(), game.getBoard(), player, game.getOpponent(player));
 
 		Movement move = ai.getBestMove();
 		
