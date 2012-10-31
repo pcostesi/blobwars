@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import ai.LevelMinimax;
+import ai.LMinimax;
 import ai.Minimax;
 
 public class IOGameController {
@@ -29,7 +29,7 @@ public class IOGameController {
 		
 		System.out.println(this.game.getBoard());
 		//TODO: delete magic number
-		Minimax ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
+		Minimax ai = new LMinimax(4, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
 		System.out.println(ai.getBestMove());
 		
 		
