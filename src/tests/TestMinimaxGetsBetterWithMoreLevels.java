@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ai.ABPMinimax;
-import ai.LevelMinimax;
+import ai.LMinimax;
 import ai.Minimax;
 import ai.TBIDABPMinimax;
 
@@ -82,8 +82,8 @@ public class TestMinimaxGetsBetterWithMoreLevels{
 	@Test
 	public void LevelMinimax(){
 		Board board = game.getBoard();
-		minimaxI = new LevelMinimax(strategy, board, 4, computer, human);
-		minimaxS = new LevelMinimax(strategy, board, 2, human, computer);
+		minimaxI = new LMinimax(4, strategy, board, computer, human);
+		minimaxS = new LMinimax(2, strategy, board, human, computer);
 		Assert.assertEquals(true, testMinimax());
 	}
 	
