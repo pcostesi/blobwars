@@ -27,11 +27,11 @@ public class Game {
 	}
 
 
-	public int getBoardHeight() {
+	public static int getBoardHeight() {
 		return Board.SIZE;
 	}
 
-	public int getBoardWidth() {
+	public static int getBoardWidth() {
 		return Board.SIZE;
 	}
 	

@@ -50,7 +50,7 @@ public class IOGameController {
 		if (move == null){
 			System.out.println("PASS");
 		} else {
-			System.out.println(" juga:" + ai.getBestMove());
+			System.out.println("Play:" + move);
 		}
 	}
 	

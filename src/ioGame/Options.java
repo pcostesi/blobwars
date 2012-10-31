@@ -7,7 +7,9 @@ public class Options {
 	private String player;
 	
 	public Options(String[] args){
-		this.mode = args[0].substring(1);
+		if (args.length > 0 ){
+			this.mode = args[0].substring(1);
+		}
 		this.args = args;
 	}
 	
@@ -32,7 +34,6 @@ public class Options {
 			}
 			
 			this.fileName = args[1];
-			
 			if (args[3].equals("1")) {
 				this.player = "1";
 			} else if (args[3].equals("2")){
@@ -46,11 +47,11 @@ public class Options {
 	}
 	
 	public boolean visualMode(){
-		return mode.equals("visual");
+		return mode != null && mode.equals("visual");
 	}
 	
 	public boolean consoleMode(){
-		return mode.equals("file");
+		return mode != null && mode.equals("file");
 	}
 
 }
