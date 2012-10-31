@@ -38,8 +38,6 @@ public class GameController{
 			processingMove = true;
 			
 			Minimax ai; 
-			ai = new LMinimax(4, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
-			ai = new ABPMinimax(5, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
 			ai = new TBIDABPMinimax(5000, game.getStrategy(), game.getBoard(), game.getComputer(), game.getHuman());
 			this.game.move(ai.getBestMove());
 			

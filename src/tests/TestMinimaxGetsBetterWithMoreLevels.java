@@ -16,6 +16,7 @@ import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
 import ai.TBIDABPMinimax;
+import ai.TBIDLMinimax;
 
 public class TestMinimaxGetsBetterWithMoreLevels{
 	
@@ -74,12 +75,20 @@ public class TestMinimaxGetsBetterWithMoreLevels{
 	@Test
 	public void testTBIDABPMinimax(){
 		Board board = game.getBoard();
-		minimaxI = new TBIDABPMinimax(300, strategy, board, computer, human);
-		minimaxS = new TBIDABPMinimax(200, strategy, board, human, computer);
+		minimaxI = new TBIDABPMinimax(375, strategy, board, computer, human);
+		minimaxS = new TBIDABPMinimax(125, strategy, board, human, computer);
 		Assert.assertEquals(true, testMinimax());
 	}
 	
 	@Test
+	public void testTBIDLMinimax(){
+		Board board = game.getBoard();
+		minimaxI = new TBIDLMinimax(300, strategy, board, computer, human);
+		minimaxS = new TBIDLMinimax(200, strategy, board, human, computer);
+		Assert.assertEquals(true, testMinimax());
+	}
+	
+	//@Test
 	public void testLMinimax(){
 		Board board = game.getBoard();
 		minimaxI = new LMinimax(4, strategy, board, computer, human);
