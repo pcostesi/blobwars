@@ -2,7 +2,7 @@ package frontend;
 
 import game.Game;
 import game.Movement;
-import ai.ABMinimax;
+import ai.ABPMinimax;
 import ai.LevelMinimax;
 import ai.Minimax;
 
@@ -38,7 +38,7 @@ public class GameController{
 			
 			Minimax ai; 
 			ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
-			ai = new ABMinimax(5, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
+			ai = new ABPMinimax(5, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
 			this.game.move(ai.getBestMove());
 			
 			if (this.game.hasWin(game.getComputer())){
