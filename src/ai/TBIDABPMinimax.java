@@ -1,9 +1,8 @@
 package ai;
 
 import game.Board;
-import game.Computer;
-import game.Human;
 import game.Movement;
+import game.Player;
 import game.Strategy;
 
 public class TBIDABPMinimax implements Minimax {
@@ -16,8 +15,8 @@ public class TBIDABPMinimax implements Minimax {
 	private Movement solution;
 	private Strategy strategy;
 	private Board board;
-	private Human human;
-	private Computer computer;
+	private Player maximizer;
+	private Player minimizer;
 	private boolean hasTime = true;
 	private int millis;
 
@@ -26,16 +25,18 @@ public class TBIDABPMinimax implements Minimax {
 	private ABPMMWorker task;
 	
 	public TBIDABPMinimax(int millis, Strategy strategy, Board board,
-			Human human, Computer computer) {
+			Player maximizer, Player minimizer) {
 		this.millis = millis;
 		this.strategy = strategy;
 		this.board = board;
-		this.human = human;
-		this.computer = computer;
+		this.maximizer = maximizer;
+		this.minimizer = minimizer;
 	}
 
 	private synchronized void postSolution(Movement move){
-		this.solution = move;
+		if (move != null){
+			this.solution = move;
+		}
 		this.notify();
 	}
 	
@@ -49,8 +50,8 @@ public class TBIDABPMinimax implements Minimax {
 	private class ABPMMWorker extends ABPMinimax implements Runnable{
 
 		public ABPMMWorker(int levels, Strategy strategy, Board board,
-				Human human, Computer computer) {
-			super(levels, strategy, board, human, computer);
+				Player maximizer, Player minimizer) {
+			super(levels, strategy, board, maximizer, minimizer);
 		}
 
 		@Override
@@ -94,12 +95,14 @@ public class TBIDABPMinimax implements Minimax {
 		 * */
 		int level = 1;
 		
+		hasTime = true;
+		solution = null;
 		clock = new Clock(millis);
 		clock.start();
 
 		try {
 			while (hasTime){
-				task = new ABPMMWorker(level, strategy, board, human, computer);
+				task = new ABPMMWorker(level, strategy, board, maximizer, minimizer);
 				worker = new Thread(task);
 				worker.setDaemon(true);
 				worker.start();
@@ -109,7 +112,15 @@ public class TBIDABPMinimax implements Minimax {
 			clock.join();
 		} catch (InterruptedException e) {
 		}
+		if (solution == null && board.hasAvailableMoves(maximizer)){
+			throw new MinimaxTimeoutException(millis, board, level);
+		}
 		return solution;
+	}
+
+	@Override
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 }

@@ -1,27 +1,25 @@
 package ai;
 
 
-import structures.Pair;
 import game.Board;
-import game.Computer;
-import game.Human;
 import game.Movement;
 import game.Player;
 import game.Strategy;
+import structures.Pair;
 
 public class LevelMinimax implements Minimax{
 	private Board root;
 	private int max_height;
-	private Human human;
-	private Computer computer;
+	private Player maximizer;
+	private Player minimizer;
 	private Strategy strategy;
 	
 	
-	public LevelMinimax(Strategy strategy, Board board, int height, Human h, Computer c){
+	public LevelMinimax(Strategy strategy, Board board, int height, Player maximizer, Player minimizer){
 		this.root = board;
 		max_height = height;
-		this.computer = c;
-		this.human = h;
+		this.maximizer = maximizer;
+		this.minimizer = minimizer;
 		this.strategy = strategy; 
 	}
 	
@@ -35,10 +33,7 @@ public class LevelMinimax implements Minimax{
 	}
 	
 	private Player getPlayerForLevel(int level){
-		if (level % 2 == 0){
-			return computer;
-		}
-		return human;
+		return level % 2 == 0 ? maximizer : minimizer;
 	}
 	
 	private Node minimax(Board board, int level){
@@ -60,7 +55,12 @@ public class LevelMinimax implements Minimax{
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
 			localScore = minimax(localBoard, level + 1);
-			if (player.betterScore(score, localScore.score)){
+			if (player == maximizer){
+				if (score < localScore.score){
+					score = localScore.score;
+					bestMove = localMove;
+				}
+			} else if (score > localScore.score){
 				score = localScore.score;
 				bestMove = localMove;
 			}
@@ -76,6 +76,12 @@ public class LevelMinimax implements Minimax{
 		Node bestMove = minimax(root, 0);
 		System.out.println(bestMove.move);
 		return bestMove.move;
+	}
+
+	@Override
+	public void setBoard(Board board) {
+		this.root = board;
+		
 	}
 	
 	
