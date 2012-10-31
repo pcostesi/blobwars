@@ -38,7 +38,7 @@ public class GameController{
 			
 			Minimax ai; 
 			ai = new LevelMinimax(game.getStrategy(), game.getBoard(), 4, game.getHuman(), game.getComputer());
-			ai = new ABMinimax(8, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
+			ai = new ABMinimax(5, game.getStrategy(), game.getBoard(), game.getHuman(), game.getComputer());
 			this.game.move(ai.getBestMove());
 			
 			if (this.game.hasWin(game.getComputer())){

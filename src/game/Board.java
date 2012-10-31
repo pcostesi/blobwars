@@ -11,6 +11,7 @@ import util.Chain;
 public class Board implements Cloneable {
 	protected static final int SIZE = 8;
 	private Strategy strategy; 
+	private int tiles = 0;
 	
 	Player[] owner;
 	private Player player1;
@@ -48,6 +49,9 @@ public class Board implements Cloneable {
 		}
 		return base;
 	}
+	public int countTiles(){
+		return tiles;
+	}
 	
 	public Board(Board other){
 		//this.tiles = Arrays.copyOf(other.tiles, SIZE * SIZE);
@@ -57,6 +61,7 @@ public class Board implements Cloneable {
 		this.strategy = other.strategy;
 		
 	}
+	
 	
 	public int getWidth(){
 		return SIZE;
@@ -68,10 +73,12 @@ public class Board implements Cloneable {
 	
 	//ATTENTION only method that modifies board
 	public void setTile(Point target, Player p){
+		tiles++;
 		owner[pointToIndex(target)] = p;
 	}
 	
 	public void deleteTile(Point target){
+		tiles--;
 		owner[pointToIndex(target)] = null;
 	}
 	
@@ -157,6 +164,21 @@ public class Board implements Cloneable {
 			}
 		}	
 		return false;
+	}
+	
+	public int countAvailableMoves(Player player){
+		int itr = 0;
+		for (int i = 0; i < SIZE; i++){
+			for (int j = 0; j < SIZE; j++){
+				Point source = Point.getInstance(j, i);
+				if (owner[pointToIndex(source)] == player){
+					if (hasAvailableMove(source)){
+						itr++;
+					}
+				}
+			}
+		}	
+		return itr;
 	}
 	
 }

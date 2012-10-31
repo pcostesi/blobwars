@@ -41,17 +41,17 @@ public class ABMinimax implements Minimax {
 		boolean moved = false;
 		
 		if (level == 0){
-			return new Node(strategy.evaluateScore(board, computer), null);
+			return new Node(strategy.evaluateScore(board, human), null);
 		}
 		
 		Node localScore;
-		for (Pair<Board, Movement> pair : board.generateChildren(computer)){
+		for (Pair<Board, Movement> pair : board.generateChildren(human)){
 			moved = true;
 			Board localBoard = pair.getFirst();
 			Movement localMove = pair.getSecond();
 			localScore = max(level - 1, localBoard, alpha, beta);
 			
-			if (computer.betterScore(beta, localScore.score)){
+			if (human.betterScore(beta, localScore.score)){
 				beta = localScore.score;
 				bestMove = localMove;
 			}
@@ -61,7 +61,7 @@ public class ABMinimax implements Minimax {
 			
 		}
 		if (!moved){
-			beta = strategy.evaluateScore(board, computer);
+			beta = strategy.evaluateScore(board, human);
 		}
 		
 		return new Node(beta , bestMove);
