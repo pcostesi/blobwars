@@ -24,4 +24,6 @@ public interface View {
 	 */
 	public abstract void clearTile(int row, int column);
 
+	public abstract void refresh();
+
 }

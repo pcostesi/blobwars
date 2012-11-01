@@ -38,8 +38,8 @@ public class Game {
 	
 	public void start(GameController observer) {
 		this.observer = observer;
-		this.strategy.setObserver(observer);
-		printBoard();
+//		this.strategy.setObserver(observer);
+//		printBoard();
 	}
 	
 	public boolean humanMove(Movement move){
@@ -57,16 +57,16 @@ public class Game {
 		return false;
 	}
 	
-	private void printBoard() {
-		for (int i = 0; i < getBoardHeight(); i++){
-			for (int j = 0; j < getBoardWidth(); j++){
-				Point source = Point.getInstance(j, i);
-				if (board.getTile(source) != ' '){
-					observer.onTileUpdate(i, j, board.getTile(source));
-				}
-			}
-		}
-	}
+//	private void printBoard() {
+//		for (int i = 0; i < getBoardHeight(); i++){
+//			for (int j = 0; j < getBoardWidth(); j++){
+//				Point source = Point.getInstance(j, i);
+//				if (board.getTile(source) != ' '){
+//					observer.onTileUpdate(i, j, board.getTile(source));
+//				}
+//			}
+//		}
+//	}
 	
 	public Strategy getStrategy(){
 		return strategy;

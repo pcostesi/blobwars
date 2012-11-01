@@ -10,7 +10,6 @@ public interface Strategy {
 	public abstract double evaluateScore(Board board, Player maximizer);
 	public abstract Board move(Board board, Player player, Movement move);
 	public abstract Board startingBoard();
-	public abstract void setObserver(GameController observer);
 	public abstract boolean hasAvailableMove(Board board, Point source);
 
 

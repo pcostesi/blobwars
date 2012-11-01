@@ -1,5 +1,6 @@
 package frontend;
 
+import structures.Point;
 import game.Game;
 import game.Movement;
 import ioGame.Options;
@@ -22,10 +23,10 @@ public class GameController {
 		initialize();
 
 		if (options.prune()) {
-			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(),
+			ai = new ABPMinimax(options.getValue(), game.getStrategy(), game.getBoard(),
 					game.getComputer(), game.getHuman());
 		} else {
-			ai = new LMinimax(4, game.getStrategy(), game.getBoard(),
+			ai = new LMinimax(options.getValue(), game.getStrategy(), game.getBoard(),
 					game.getComputer(), game.getHuman());
 		}
 	}
@@ -41,6 +42,7 @@ public class GameController {
 	public void play(Movement move) {
 		if (humanTurn) {
 			humanTurn = !this.game.humanMove(move);
+			printBoard();
 			if (this.game.hasWin(game.getHuman())) {
 				container.showWin();
 			}
@@ -52,6 +54,7 @@ public class GameController {
 			ai.setBoard(game.getBoard());
 			this.game.move(ai.getBestMove());
 
+			printBoard();
 			if (this.game.hasWin(game.getComputer())) {
 				container.showLose();
 			}
@@ -68,10 +71,23 @@ public class GameController {
 	public void quit() {
 		System.exit(0);
 	}
+	
+	private void printBoard() {
+		for (int i = 0; i < Game.getBoardHeight(); i++){
+			for (int j = 0; j < Game.getBoardWidth(); j++){
+				char tile = game.getBoard().getTile(Point.getInstance(j, i));
+				if (tile != ' '){
+					container.getView().updateTile(i, j, tile);
+				}
+			}
+		}
+		container.getView().refresh();
+	}
 
 	private void startGame() {
 		container.setGame(game.getBoardHeight(), game.getBoardWidth());
 		container.setGameVisible();
 		game.start(this);
+		printBoard();
 	}
 }

@@ -43,21 +43,11 @@ public class GamePanel extends JPanel implements View {
 	public void initialize() {
 		setLayout(new BorderLayout());
 
-		// Load background image
-		try {
-			background = ImageUtils.loadImage("resources/background.png");
-		} catch (IOException e) {
-			JOptionPane
-					.showMessageDialog(
-							this,
-							"Unable to load all resources. You may continue to play the game, but some images may not show.",
-							"Resource error", JOptionPane.WARNING_MESSAGE);
-		}
 		initializeBoard();
 		initializeStatusPanel();
 		loadPlayerAssets();
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		setSize(boardPanel.getWidth() + 20, boardPanel.getHeight() + 68);
+		setSize(boardPanel.getWidth() + 10, boardPanel.getHeight() + 40);
 	}
 
 	/**
@@ -79,7 +69,6 @@ public class GamePanel extends JPanel implements View {
 			}
 
 			public void cellClicked(int row, int column) {
-				System.out.println("click");
 			}
 
 		});
@@ -108,11 +97,13 @@ public class GamePanel extends JPanel implements View {
 		boardPanel.clearImage(row, column);
 
 		if (player == 'h') {
-			boardPanel.appendImage(row, column, humanBlob);
+			boardPanel.setImage(row, column, humanBlob);
 		} else if (player == 'c') {
-			boardPanel.appendImage(row, column, computerBlob);
+			boardPanel.setImage(row, column, computerBlob);
 		}
-
+	}
+	
+	public void refresh(){
 		boardPanel.repaint();
 	}
 
@@ -128,5 +119,5 @@ public class GamePanel extends JPanel implements View {
 		}
 		paintComponents(g);
 	}
-
+	
 }
