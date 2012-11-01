@@ -50,6 +50,30 @@ public class Options {
 		return args[args.length - 1] == "-prune";
 	}
 	
+	public boolean byTime(){
+		if (prune()){
+			return args[args.length - 3] == "-maxTime";
+		}else{
+			return args[args.length - 2] == "-maxTime";
+		}
+	}
+	
+	public boolean byDepth(){
+		if (prune()){
+			return args[args.length - 3] == "-depth";
+		}else{
+			return args[args.length - 2] == "-depth";
+		}	
+	}
+	
+	public int getValue(){
+		if (prune()){
+			return Integer.valueOf(args[args.length - 2]);
+		}else{
+			return Integer.valueOf(args[args.length - 1]);
+		}	
+	}
+	
 	public boolean visualMode(){
 		return mode != null && mode.equals("visual");
 	}
