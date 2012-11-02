@@ -160,5 +160,9 @@ public class LMinimax implements Minimax {
 	public long runTime() {
 		return runtime;
 	}
+	
+	public String getName() {
+		return "Level Minimax";
+	}
 
 }

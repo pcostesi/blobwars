@@ -142,4 +142,8 @@ public class TBIDLMinimax implements Minimax {
 	public long runTime() {
 		return runtime;
 	}
+	
+	public String getName() {
+		return "Time Bound Iterative Deepening Level Minimax";
+	}
 }

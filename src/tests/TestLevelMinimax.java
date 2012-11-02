@@ -29,10 +29,10 @@ public class TestLevelMinimax {
 	private Board starterBoard(){
 		Board baseBoard = new Board(strategy, human, computer);
 		baseBoard = baseBoard.
-				putBlob(human, Point.getInstance(0, 0)).
-				putBlob(human, Point.getInstance(0, 7)).
-				putBlob(computer, Point.getInstance(7, 0)).
-				putBlob(computer, Point.getInstance(7, 7));
+				putBlob(human, new Point(0, 0)).
+				putBlob(human, new Point(0, 7)).
+				putBlob(computer, new Point(7, 0)).
+				putBlob(computer, new Point(7, 7));
 		
 		return baseBoard;
 	}

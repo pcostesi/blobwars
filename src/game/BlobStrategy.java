@@ -105,7 +105,7 @@ public class BlobStrategy implements Strategy {
 							|| y >= base.getHeight()) {
 						continue;
 					}
-					Point target = Point.getInstance(x, y);
+					Point target = new Point(x, y);
 					if (base.getTileOwner(target) != null) {
 
 						continue;
@@ -157,7 +157,7 @@ public class BlobStrategy implements Strategy {
 		Point source = move.source;
 		Point target = move.target;
 
-		if (source == target || move.distance() > 2) {
+		if (source.equals(target) || move.distance() > 2) {
 			return false;
 		}
 		if (board.getTileOwner(source) == null
@@ -212,10 +212,10 @@ public class BlobStrategy implements Strategy {
 	public Board startingBoard() {
 
 		Board board = new Board(this, human, computer);
-		board.putBlob(human, Point.getInstance(0, 7));
-		board.putBlob(human, Point.getInstance(0, 0));
-		board.putBlob(computer, Point.getInstance(7, 0));
-		board.putBlob(computer, Point.getInstance(7, 7));
+		board.putBlob(human, new Point(0, 7));
+		board.putBlob(human, new Point(0, 0));
+		board.putBlob(computer, new Point(7, 0));
+		board.putBlob(computer, new Point(7, 7));
 		return board;
 	}
 
@@ -241,7 +241,7 @@ public class BlobStrategy implements Strategy {
 					continue;
 				}
 
-				Point target = Point.getInstance(x, y);
+				Point target = new Point(x, y);
 
 				if (board.getTileOwner(target) != null) {
 					board.setTile(target, player);
@@ -275,7 +275,7 @@ public class BlobStrategy implements Strategy {
 						|| y >= board.getHeight()) {
 					continue;
 				}
-				Point target = Point.getInstance(x, y);
+				Point target = new Point(x, y);
 				if (board.getTileOwner(target) == null) {
 
 					return true;

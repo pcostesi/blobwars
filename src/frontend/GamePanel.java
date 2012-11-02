@@ -61,8 +61,8 @@ public class GamePanel extends JPanel implements View {
 
 			public void cellDragged(int sourceRow, int sourceColumn,
 					int targetRow, int targetColumn) {
-				Point source = Point.getInstance(sourceColumn, sourceRow);
-				Point target = Point.getInstance(targetColumn, targetRow);
+				Point source = new Point(sourceColumn, sourceRow);
+				Point target = new Point(targetColumn, targetRow);
 				Movement move = new Movement(source, target);
 
 				controller.play(move);

@@ -94,7 +94,7 @@ public class GameController {
 	private void printBoard() {
 		for (int i = 0; i < Game.getBoardHeight(); i++) {
 			for (int j = 0; j < Game.getBoardWidth(); j++) {
-				char tile = game.getBoard().getTile(Point.getInstance(j, i));
+				char tile = game.getBoard().getTile(new Point(j, i));
 				if (tile != ' ') {
 					container.getView().updateTile(i, j, tile);
 				}

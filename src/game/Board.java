@@ -224,7 +224,7 @@ public class Board implements Cloneable {
 		List<Iterable<Pair<Board, Movement>>> children = new ArrayList<Iterable<Pair<Board, Movement>>>(SIZE * SIZE);
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
-				Point source = Point.getInstance(j, i);
+				Point source = new Point(j, i);
 				if (owner[pointToIndex(source)] == player){
 					children.add(strategy.boardsForMove(this, source));
 				}
@@ -295,7 +295,7 @@ public class Board implements Cloneable {
 	public boolean hasAvailableMoves(Player player){
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
-				Point source = Point.getInstance(j, i);
+				Point source = new Point(j, i);
 				if (owner[pointToIndex(source)] == player){
 					if (hasAvailableMove(source)){
 						return true;
@@ -316,7 +316,7 @@ public class Board implements Cloneable {
 		int itr = 0;
 		for (int i = 0; i < SIZE; i++){
 			for (int j = 0; j < SIZE; j++){
-				Point source = Point.getInstance(j, i);
+				Point source = new Point(j, i);
 				if (owner[pointToIndex(source)] == player){
 					if (hasAvailableMove(source)){
 						itr++;

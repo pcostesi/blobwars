@@ -160,4 +160,8 @@ public class ABPMinimax implements Minimax {
 		return runtime;
 	}
 
+	public String getName() {
+		return "Alpha-Beta Pruning Minimax";
+	}
+
 }

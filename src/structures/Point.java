@@ -14,9 +14,6 @@ public class Point {
 	private final int x;
 	private final int y;
 	
-	private final static int SIZE = 8;
-	
-	private static Point[] points = new Point[(SIZE + 1) * (SIZE + 1)];
 	
 	/**
 	 * Instantiates a new point.
@@ -24,26 +21,11 @@ public class Point {
 	 * @param x the x
 	 * @param y the y
 	 */
-	private Point(int x, int y){
+	public Point(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
 	
-	/**
-	 * Gets the single instance of Point.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return single instance of Point
-	 */
-	public static Point getInstance(int x, int y){
-		Point p = points[SIZE * y + x];
-		if (p == null){
-			p = new Point(x, y);
-			points[SIZE * y + x] = p;
-		}
-		return p;
-	}
 	
 	/**
 	 * Gets the x value
@@ -52,6 +34,15 @@ public class Point {
 	 */
 	public int getX(){
 		return x;
+	}
+	
+	public boolean equals(Object obj){
+		if (!(obj instanceof Point)){
+			return false;
+		}
+		Point p = (Point) obj;
+		return p.getX() == this.getX() && p.getY() == this.getY();
+		
 	}
 	
 	/**
@@ -64,6 +55,6 @@ public class Point {
 	}
 	
 	public String toString(){
-		return "<" + x + ", " + y + ">";
+		return "<x: " + x + ", y: " + y + ">";
 	}
 }

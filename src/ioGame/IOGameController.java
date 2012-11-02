@@ -1,5 +1,6 @@
 package ioGame;
 
+import game.Board;
 import game.Game;
 import game.Movement;
 import game.Player;
@@ -64,19 +65,32 @@ public class IOGameController {
 	}
 
 	private void start() {
-
+		Board before = (Board) game.getBoard().clone();
 		Movement move = ai.getBestMove();
 		game.move(move); // borrar
+		Board after = (Board) game.getBoard().clone();
 
 		if (move == null) {
 			System.out.println("PASS");
 		} else {
-			System.out.println("Play:" + move);
+			System.out.println("Play: " + move);
 		}
-		
+		System.out.println();
+		System.out.println();
+		System.out.println("Metadata about solver");
+		System.out.println();
+		System.out.println("Using solver: " + ai.getName());
 		System.out.println("Max height reached during search: " + ai.getHeight());
 		System.out.println("Number of states explored: " + ai.exploredStates());
 		System.out.println("Time searching for a solution: " + ai.runTime() + "ms");
+		System.out.println();
+		System.out.println();
+		System.out.println("Ply:");
+		System.out.println("Board before playing:");
+		System.out.println(before);
+		System.out.println();
+		System.out.println("Board after playing:");
+		System.out.println(after);
 	}
 
 	private char[] openCharBoard(String path) {

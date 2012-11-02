@@ -9,4 +9,5 @@ public interface Minimax {
 	public int getHeight();
 	public int exploredStates();
 	public long runTime();
+	public String getName();
 }

@@ -143,4 +143,7 @@ public class TBIDABPMinimax implements Minimax {
 		return runtime;
 	}
 
+	public String getName() {
+		return "Time Bound Iterative Deepening Alpha-Beta Pruning Minimax";
+	}
 }

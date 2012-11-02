@@ -26,7 +26,7 @@ public class TestGame {
 		assertFalse(almostFinishedGame.hasWin(almostFinishedGame.getComputer()));
 		
 		// Move a computer blob near a human blob
-		almostFinishedGame.move(new Movement(Point.getInstance(2, 5), Point.getInstance(2, 4)));
+		almostFinishedGame.move(new Movement(new Point(2, 5), new Point(2, 4)));
 		
 		assertFalse(almostFinishedGame.hasWin(almostFinishedGame.getHuman()));
 		assertTrue(almostFinishedGame.hasWin(almostFinishedGame.getComputer()));
@@ -44,18 +44,18 @@ public class TestGame {
 	
 	private void emptyBoard(Board board){
 		// Remove starting tiles
-		board.deleteTile(Point.getInstance(0, 0));
-		board.deleteTile(Point.getInstance(7, 0));
-		board.deleteTile(Point.getInstance(7, 7));
-		board.deleteTile(Point.getInstance(0, 7));
+		board.deleteTile(new Point(0, 0));
+		board.deleteTile(new Point(7, 0));
+		board.deleteTile(new Point(7, 7));
+		board.deleteTile(new Point(0, 7));
 	}
 	
 	private Game almostFinishedGame(){
 		Game game = new Game();
 		emptyBoard(game.getBoard());
 		
-		game.getBoard().setTile(Point.getInstance(2, 3), game.getHuman());
-		game.getBoard().setTile(Point.getInstance(2, 5), game.getComputer());
+		game.getBoard().setTile(new Point(2, 3), game.getHuman());
+		game.getBoard().setTile(new Point(2, 5), game.getComputer());
 		return game;
 	}
 	
