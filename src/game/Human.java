@@ -1,16 +1,17 @@
 package game;
 
+/**
+ * The Human player
+ */
 public class Human extends Player{
 
 	@Override
 	public boolean betterScore(double score, double localScore) {
-		// TODO Auto-generated method stub
 		return localScore < score;
 	}
 
 	@Override
 	public int initialScore() {
-		// TODO Auto-generated method stub
 		return Integer.MAX_VALUE;
 	}
 
