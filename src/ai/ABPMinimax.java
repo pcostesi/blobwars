@@ -13,7 +13,11 @@ public class ABPMinimax implements Minimax {
 	private Player minimizer;
 	private Strategy strategy;
 	private int levels = 1;
+	private int maxlvl = 0;
 	private boolean poison = false;
+
+	private int states = 0;
+	private long runtime = -2;
 
 	private class Node {
 		public double score;
@@ -48,8 +52,9 @@ public class ABPMinimax implements Minimax {
 		}
 		Movement bestMove = null;
 		boolean moved = false;
-
+		states++;
 		if (level == 0) {
+			maxlvl = levels;
 			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 
@@ -69,6 +74,8 @@ public class ABPMinimax implements Minimax {
 
 		}
 		if (!moved) {
+			
+
 			beta = strategy.evaluateScore(board, maximizer);
 		}
 
@@ -82,8 +89,9 @@ public class ABPMinimax implements Minimax {
 		}
 		Movement bestMove = null;
 		boolean moved = false;
-
+		states++;
 		if (level == 0) {
+			maxlvl = levels;
 			return new Node(strategy.evaluateScore(board, maximizer), null);
 		}
 
@@ -105,6 +113,9 @@ public class ABPMinimax implements Minimax {
 
 		}
 		if (!moved) {
+			if (maxlvl < levels - level){
+				maxlvl = levels - level;
+			}
 			alpha = strategy.evaluateScore(board, maximizer);
 		}
 
@@ -118,18 +129,35 @@ public class ABPMinimax implements Minimax {
 	public Movement getBestMove() {
 		Node root;
 		poison = false;
+		states = 0;
+		runtime = -1;
+		maxlvl = 0;
+		long start = System.currentTimeMillis();
 		try {
 			root = max(levels, board, Integer.MIN_VALUE, Integer.MAX_VALUE,
 					maximizer);
-
+			runtime = System.currentTimeMillis() - start;
 			return root.move;
 		} catch (InterruptedException e) {
 		}
+		runtime = System.currentTimeMillis() - start;
 		return null;
 	}
 
 	public void setBoard(Board board) {
 		this.board = board;
+	}
+
+	public int getHeight() {
+		return maxlvl;
+	}
+
+	public int exploredStates() {
+		return states;
+	}
+
+	public long runTime() {
+		return runtime;
 	}
 
 }

@@ -19,6 +19,10 @@ public class TBIDLMinimax implements Minimax {
 	private Player minimizer;
 	private boolean hasTime = true;
 	private int millis;
+	private int states = 0;
+	private long runtime = -3;
+	private int maxlvl = 0;
+	
 
 	private Thread worker;
 	private Thread clock;
@@ -36,6 +40,10 @@ public class TBIDLMinimax implements Minimax {
 	private synchronized void postSolution(Movement move) {
 		if (move != null) {
 			this.solution = move;
+			states += task.exploredStates();
+			if (maxlvl < task.getHeight()){
+				maxlvl = task.getHeight();
+			}
 		}
 		this.notify();
 	}
@@ -97,7 +105,8 @@ public class TBIDLMinimax implements Minimax {
 		solution = null;
 		clock = new Clock(millis);
 		clock.start();
-
+		long start = System.currentTimeMillis();
+		
 		try {
 			while (hasTime) {
 				task = new LMMWorker(level, strategy, board, maximizer,
@@ -114,6 +123,7 @@ public class TBIDLMinimax implements Minimax {
 		if (solution == null && board.hasAvailableMoves(maximizer)) {
 			throw new MinimaxTimeoutException(millis, board, level);
 		}
+		runtime = (System.currentTimeMillis() - start);
 		return solution;
 	}
 
@@ -121,4 +131,15 @@ public class TBIDLMinimax implements Minimax {
 		this.board = board;
 	}
 
+	public int getHeight() {
+		return maxlvl;
+	}
+
+	public int exploredStates() {
+		return states;
+	}
+
+	public long runTime() {
+		return runtime;
+	}
 }

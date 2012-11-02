@@ -51,7 +51,9 @@ public class OptionParser {
 					throw new RuntimeException("Couldn't parse " + name);
 				}
 			}
-			
+			if (name.startsWith(" ")){
+				name = parser.name();
+			}
 			values.put(name, parser.value());
 			values2.put(name, parser.values());
 		}
