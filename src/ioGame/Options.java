@@ -24,12 +24,20 @@ public class Options {
 	
 	
 	public boolean valid(){
+		if (this.args.length < 3){
+			return false;
+		}
+		
 		if (!consoleMode() && !visualMode()){
 			return false;
 		}
 		
+		if (!byTime() && !byDepth()){
+			return false;
+		}
+		
 		if (consoleMode()){
-			if (this.args.length < 4){
+			if (this.args.length < 6){
 				return false;
 			}
 			
@@ -47,22 +55,22 @@ public class Options {
 	}
 	
 	public boolean prune(){
-		return args[args.length - 1] == "-prune";
+		return args[args.length - 1].equals("-prune");
 	}
 	
 	public boolean byTime(){
 		if (prune()){
-			return args[args.length - 3] == "-maxTime";
+			return args[args.length - 3].equals("-maxTime");
 		}else{
-			return args[args.length - 2] == "-maxTime";
+			return args[args.length - 2].equals("-maxTime");
 		}
 	}
 	
 	public boolean byDepth(){
 		if (prune()){
-			return args[args.length - 3] == "-depth";
+			return args[args.length - 3].equals("-depth");
 		}else{
-			return args[args.length - 2] == "-depth";
+			return args[args.length - 2].equals("-depth");
 		}	
 	}
 	
