@@ -5,18 +5,29 @@ import java.util.NoSuchElementException;
 
 import structures.Pair;
 import structures.Point;
-import frontend.GameController;
 
+/**
+ * An implementation of Strategy for BlobWars.
+ */
 public class BlobStrategy implements Strategy {
 
 	Human human;
 	Computer computer;
 
+	/**
+	 * Instantiates a new blob strategy.
+	 *
+	 * @param h the h
+	 * @param c the c
+	 */
 	public BlobStrategy(Human h, Computer c) {
 		human = h;
 		computer = c;
 	}
 
+	/**
+	 * BlobStrategyIterable.
+	 */
 	private class BlobStrategyIterable implements
 			Iterable<Pair<Board, Movement>> {
 
@@ -24,6 +35,12 @@ public class BlobStrategy implements Strategy {
 		private Point source;
 		private Player player;
 
+		/**
+		 * Instantiates a new blob strategy iterable.
+		 *
+		 * @param board the board
+		 * @param source the source
+		 */
 		public BlobStrategyIterable(Board board, Point source) {
 			Player player = board.getTileOwner(source);
 
@@ -42,6 +59,9 @@ public class BlobStrategy implements Strategy {
 
 	}
 
+	/**
+	 * The BlobStrategyIterator.
+	 */
 	private class BlobStrategyIterator implements
 			Iterator<Pair<Board, Movement>> {
 
@@ -52,6 +72,13 @@ public class BlobStrategy implements Strategy {
 		private int moveIdx = 0;
 		private int top = 0;
 
+		/**
+		 * Instantiates a new blob strategy iterator.
+		 *
+		 * @param base the base
+		 * @param source the source
+		 * @param player the player
+		 */
 		public BlobStrategyIterator(Board base, Point source, Player player) {
 
 			this.base = base;
@@ -60,6 +87,9 @@ public class BlobStrategy implements Strategy {
 			generateMoves();
 		}
 
+		/**
+		 * Generate all the possible moves.
+		 */
 		private void generateMoves() {
 			int idx = 0;
 			for (int dx = -2; dx < 3; dx++) {
@@ -112,7 +142,13 @@ public class BlobStrategy implements Strategy {
 			throw new UnsupportedOperationException();
 		}
 	}
-
+	
+	/**
+	 * Tells if the given move is valid inside the given board 
+	 *
+	 * @param board the board 
+	 * @param move the intended move 
+	 */
 	public boolean isValid(Board board, Movement move) {
 		if (move == null || board == null) {
 
@@ -132,13 +168,29 @@ public class BlobStrategy implements Strategy {
 		return true;
 	}
 
-	/* ALWAYS for current player */
+	/**
+	 * Evaluate the score of a board 
+	 *
+	 * @param board the board 
+	 * @param maximzer the player 
+	 * @return the score 
+	 * 
+	 */
+
 	public double evaluateScore(Board board, Player maximizer) {
-		// return board.countTilesForPlayer(computer) -
-		// board.countTilesForPlayer(human);
 		return board.gradientForPlayer(maximizer);
 	}
 
+	/**
+	 * Makes a move inside the board.
+	 * Depending on the movement it causes an attack, a duplication of blob or both. 
+	 *
+	 * @param board the board 
+	 * @param player the player 
+	 * @param move the movement 
+	 * @return the same board
+	 */
+	
 	public Board move(Board board, Player player, Movement move) {
 		board.putBlob(player, move.target);
 
@@ -151,6 +203,12 @@ public class BlobStrategy implements Strategy {
 		return board;
 	}
 
+	/**
+	 * The starting board for the blobwars game 
+	 *
+	 * @param board the board 
+	 * @return a new board
+	 */
 	public Board startingBoard() {
 
 		Board board = new Board(this, human, computer);
@@ -161,7 +219,13 @@ public class BlobStrategy implements Strategy {
 		return board;
 	}
 
-	// Only method that modifies the board
+	/**
+	 * Attack, and all its consequences on the board
+	 *
+	 * @param player the player
+	 * @param board the board
+	 * @param source the source
+	 */
 	private void attack(Player player, Board board, Point source) {
 		for (int dx = -1; dx < 2; dx++) {
 			for (int dy = -1; dy < 2; dy++) {
@@ -190,7 +254,13 @@ public class BlobStrategy implements Strategy {
 			Point source) {
 		return new BlobStrategyIterable(board, source);
 	}
-
+	
+	/** Returns true if the given Point has avaiable moves inside the board
+	 *
+	 * @param player the player
+	 * @param board the board
+	 * @returns boolean 
+	 */
 	public boolean hasAvailableMove(Board board, Point source) {
 		for (int dx = -2; dx < 3; dx++) {
 			for (int dy = -2; dy < 3; dy++) {
