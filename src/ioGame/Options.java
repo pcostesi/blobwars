@@ -1,11 +1,24 @@
 package ioGame;
 
+/**
+ * Options.
+ * An abstraction of the command line arguments.
+ */
 public class Options {
+	
 	private String[] args;
+	
 	private String mode;
+	
 	private String fileName;
+	
 	private String player;
 	
+	/**
+	 * Instantiates a new options.
+	 *
+	 * @param args an array of arguments
+	 */
 	public Options(String[] args){
 		if (args.length > 0 ){
 			this.mode = args[0].substring(1);
@@ -14,15 +27,30 @@ public class Options {
 	}
 	
 	
+	/**
+	 * Gets the file name.
+	 *
+	 * @return the file name
+	 */
 	public String getFileName(){
 		return fileName;
 	}
 	
+	/**
+	 * Gets the player number.
+	 *
+	 * @return the player number
+	 */
 	public String getPlayerNumber(){
 		return player;
 	}
 	
 	
+	/**
+	 * Validates if the given arguments are ok
+	 *
+	 * @return true, if successful
+	 */
 	public boolean valid(){
 		if (this.args.length < 3){
 			return false;
@@ -54,10 +82,20 @@ public class Options {
 		return true;
 	}
 	
+	/**
+	 * Minimax with Prune option
+	 *
+	 * @return true, if successful
+	 */
 	public boolean prune(){
 		return args[args.length - 1].equals("-prune");
 	}
 	
+	/**
+	 * Minimax by time option
+	 *
+	 * @return true, if successful
+	 */
 	public boolean byTime(){
 		if (prune()){
 			return args[args.length - 3].equals("-maxTime");
@@ -66,6 +104,11 @@ public class Options {
 		}
 	}
 	
+	/**
+	 * Minimax by depth option.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean byDepth(){
 		if (prune()){
 			return args[args.length - 3].equals("-depth");
@@ -74,6 +117,11 @@ public class Options {
 		}	
 	}
 	
+	/**
+	 * Gets the value, be it the time in milliseconds or the depth level
+	 *
+	 * @return the value
+	 */
 	public int getValue(){
 		if (prune()){
 			return Integer.valueOf(args[args.length - 2]);
@@ -82,10 +130,20 @@ public class Options {
 		}	
 	}
 	
+	/**
+	 * Visual mode.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean visualMode(){
 		return mode != null && mode.equals("visual");
 	}
 	
+	/**
+	 * Console mode.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean consoleMode(){
 		return mode != null && mode.equals("file");
 	}
