@@ -1,12 +1,14 @@
 package frontend;
 
-import structures.Point;
 import game.Game;
 import game.Movement;
-import ioGame.Options;
+import optparse.Options;
+import structures.Point;
 import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
+import ai.TBIDABPMinimax;
+import ai.TBIDLMinimax;
 
 public class GameController {
 
@@ -22,12 +24,29 @@ public class GameController {
 		this.options = options;
 		initialize();
 
-		if (options.prune()) {
-			ai = new ABPMinimax(options.getValue(), game.getStrategy(), game.getBoard(),
-					game.getComputer(), game.getHuman());
+		int level = 0;
+		int time = 0;
+		if (options.hasFlag("prune")) {
+			if (options.hasFlag("depth")) {
+				level = options.getIntValue("depth");
+				ai = new ABPMinimax(level, game.getStrategy(), game.getBoard(),
+						game.getComputer(), game.getHuman());
+			} else if (options.hasFlag("maxtime")) {
+				time = options.getIntValue("maxtime");
+				ai = new TBIDABPMinimax(time * 1000, game.getStrategy(),
+						game.getBoard(), game.getComputer(), game.getHuman());
+			}
+
 		} else {
-			ai = new LMinimax(options.getValue(), game.getStrategy(), game.getBoard(),
-					game.getComputer(), game.getHuman());
+			if (options.hasFlag("depth")) {
+				level = options.getIntValue("depth");
+				ai = new LMinimax(level, game.getStrategy(), game.getBoard(),
+						game.getComputer(), game.getHuman());
+			} else if (options.hasFlag("maxtime")) {
+				time = options.getIntValue("maxtime");
+				ai = new TBIDLMinimax(time * 1000, game.getStrategy(),
+						game.getBoard(), game.getComputer(), game.getHuman());
+			}
 		}
 	}
 
@@ -71,12 +90,12 @@ public class GameController {
 	public void quit() {
 		System.exit(0);
 	}
-	
+
 	private void printBoard() {
-		for (int i = 0; i < Game.getBoardHeight(); i++){
-			for (int j = 0; j < Game.getBoardWidth(); j++){
+		for (int i = 0; i < Game.getBoardHeight(); i++) {
+			for (int j = 0; j < Game.getBoardWidth(); j++) {
 				char tile = game.getBoard().getTile(Point.getInstance(j, i));
-				if (tile != ' '){
+				if (tile != ' ') {
 					container.getView().updateTile(i, j, tile);
 				}
 			}

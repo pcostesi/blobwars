@@ -10,9 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import optparse.Options;
 import ai.ABPMinimax;
 import ai.LMinimax;
 import ai.Minimax;
+import ai.TBIDABPMinimax;
+import ai.TBIDLMinimax;
 
 public class IOGameController {
 	File file;
@@ -31,17 +34,32 @@ public class IOGameController {
 			player = game.getHuman();
 		} else {
 			player = game.getComputer();
+		}		start(player);
+
+		int level = 0;
+		int time = 0;
+		if (options.hasFlag("prune")) {
+			if (options.hasFlag("depth")) {
+				level = options.getIntValue("depth");
+				ai = new ABPMinimax(level, game.getStrategy(), game.getBoard(),
+						game.getComputer(), game.getHuman());
+			} else if (options.hasFlag("maxtime")) {
+				time = options.getIntValue("maxtime");
+				ai = new TBIDABPMinimax(time * 1000, game.getStrategy(),
+						game.getBoard(), game.getComputer(), game.getHuman());
+			}
+
+		} else {
+			if (options.hasFlag("depth")) {
+				level = options.getIntValue("depth");
+				ai = new LMinimax(level, game.getStrategy(), game.getBoard(),
+						game.getComputer(), game.getHuman());
+			} else if (options.hasFlag("maxtime")) {
+				time = options.getIntValue("maxtime");
+				ai = new TBIDLMinimax(time * 1000, game.getStrategy(),
+						game.getBoard(), game.getComputer(), game.getHuman());
+			}
 		}
-		ai = new LMinimax(4, game.getStrategy(), game.getBoard(), player,
-				game.getOpponent(player));
-
-		if (options.prune()) {
-
-			ai = new ABPMinimax(4, game.getStrategy(), game.getBoard(), player,
-					game.getOpponent(player));
-		}
-		start(player);
-
 		System.out.println(this.game.getBoard());
 
 	}

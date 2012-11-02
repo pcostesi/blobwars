@@ -1,7 +1,10 @@
 package frontend;
 
 import ioGame.IOGameController;
-import ioGame.Options;
+import optparse.FlagOption;
+import optparse.OptionParser;
+import optparse.Options;
+import optparse.ValuedOption;
 
 /**
  * Blob Wars application entry point.
@@ -14,19 +17,25 @@ public class BlobWars {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Options options = new Options(args);
 
-		if (!options.valid()) {
-			System.out.println("Wrong arguments");
-			System.exit(0);
-		}
+		OptionParser optparse = new OptionParser();
+		optparse
+			.addOption(new FlagOption("prune"))
+			.addOption(new FlagOption("visual"))
+			.addOption(new ValuedOption("player"))
+			.addOption(new ValuedOption("file"))
+			.addOption(new ValuedOption("maxtime"))
+			.addOption(new ValuedOption("depth"));
+		
+		Options opts = optparse.parse(args);
+		
 
-		if (options.visualMode()) {
+		if (opts.hasFlag("visual")) {
 
-			new GameController(options);
-		} else if (options.consoleMode()) {
-			new IOGameController(options.getFileName(),
-					options.getPlayerNumber(), options);
+			new GameController(opts);
+		} else if (opts.hasFlag("file")) {
+			new IOGameController(opts.getValue("file"),
+					opts.getValue("player"), opts);
 		}
 	}
 }
