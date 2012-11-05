@@ -110,6 +110,24 @@ Un \textit{Tablero Terminal} es un tablero tal que para algún jugador no existe
 \section{Algoritmos}
 \subsection{Minimax (Na\"ive)}
 \subsection{Minimax con Poda Alfa-Beta}
+\section{Problemas encontrados}
+\subsection{Uso eficiente de memoria}
+  Inicialmente cuando se desarrollaron las clases del juego, se notó que consumían memoria demás.
+  Eso se vió demostrado ya que el algoritmo propuesto para minimax no podía llegar hasta el nivel 5.
+  A continuación se detallan los puntos críticos en donde se tuvo que repensar la implementación.
+
+  \subsection{Clase Board}
+    En un principio, la forma utilizada para representar el board fue utilizando objetos Tile, del cual heredaban EmptyTile y BlobTile.
+    Es decir, que la cantidad de referencias de cada tablero era siempre de 64 $(8 * 8)$.  A la vez, cada BlobTile contenía una referencia a un Player.
+
+    Para iterar facilmente por los tiles de un Player y obtener sus jugadas posibles se contó con un $HashMap<Player, ArrayList<Point>>$, y un método para acceder a esos  puntos en donde se encontraban los tiles de cada jugador.
+
+    Para hacer uso más eficiente de la memoria, se decidió implementar el Board cómo un array primitivo de Player, y un método para convertir de Point al indice de ese array.
+    En este caso se hizo un cambio que consume menos memoria al haber menos referencias y objetos en tiempo de ejecucón, aunque es cierto que esa solución hace que haya que calcular más en tiempo de ejecución.
+
+    El cambio más radical en cuanto a cantidad de memoria consumida, se logró implementando un iterador de Board para ser utilizado al generar los tableros con
+    las jugadas posibles a partir de cierto Board.
+
 \section{Comparaciones y pruebas}
 \section{Implementación}
 \section{Conclusiones}
