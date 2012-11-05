@@ -67,7 +67,7 @@ public class IOGameController {
 	private void start() {
 		Board before = (Board) game.getBoard().clone();
 		Movement move = ai.getBestMove();
-		game.move(move); // borrar
+		game.move(move); 
 		Board after = (Board) game.getBoard().clone();
 
 		if (move == null) {
