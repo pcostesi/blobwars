@@ -1,0 +1,120 @@
+\documentclass[10pt,a4paper,notitlepage,twocolumn,draft]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{authblk}
+\usepackage{makeidx}
+\renewcommand\Authand{ y }
+\author[1]{\rm Kevin J. Hanna}
+\author[2]{\rm Pablo A. Costesich}
+\affil[ ]{Alumnos de Ingeniería Informática}
+\affil[ ]{Instituto Tecnológico de Buenos Aires}
+\affil[ ]{Av. Madero 399, C.A.B.A., Argentina}
+\affil[1]{\textit {khanna@alu.itba.edu.ar}}
+\affil[2]{\textit {pcostesi@ieee.org}}
+
+
+\newenvironment{definition}[1][Definición]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+
+%\email{khanna@alu.itba.edu.ar, pcostesi@ieee.org}
+
+\title{Estrategia de resolución Minimax para Juegos de Suma Cero e Implementación para el juego \textit {BlobWars}}
+\makeindex
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Se presenta una introducción a la Teoría de Juegos y Juegos de Suma Cero. Éstos son juegos de dos jugadores con turnos y un balance entre sus ganancias y pérdidas. La estrategia de resolución analizada en este informe es Minimax, un algoritmo de búsqueda en profundidad limitada, junto con la heurística de Poda Alfa-Beta. Se detalla la implementación y resultados prácticos.
+\end{abstract}
+
+\section{Introducción}
+El Trabajo Práctico Especial de la cátedra de Estructuras de Datos y Algoritmos para el segundo cuatrimestre de 2012 propone la resolución del juego \textit{BlobWars} mediante el algoritmo Minimax, con y sin Poda Alfa-Beta, en el lenguaje de programación Java. La implementación del mismo debe contar con un modo visual y de lectura de tableros por archivo.
+
+
+\subsection{BlobWars}
+\textit{BlobWars} es un juego de dos jugadores por turnos en un tablero de 8x8. El objetivo es lograr la mayor cantidad de piezas sobre el tablero para cuando alguno de los jugadores no pueda realizar nuevos movimientos.
+
+Los posibles movimientos de una mancha (\textit{blob}) son siempre hacia casilleros vacíos y cumplen estas reglas:
+\begin{itemize}
+\item Los movimientos a distancia 1 mantienen la mancha de origen y generan una nueva del mismo color en el casillero de destino.
+\item Los movimientos a distancia 2 desplazan la mancha al casillero de destino.
+\item No pueden realizarse movimientos que no sean de distancia 1 o 2.
+\end{itemize}
+
+\begin{definition}
+El conjunto $Manchas$ es equivalente a $\{-1, 0, 1\}$.
+\end{definition}
+
+\begin{definition}Un tablero es una matriz de $Manchas^{8x8}$.\end{definition}
+
+\begin{definition}
+Un punto es un par ordenado $\left\langle x, y\right\rangle \in Point$, donde $Point = Side \times Side$ y $Side = \{1, 2, 3, 4, 5, 6, 7, 8\}$.
+\end{definition}
+
+\begin{definition}
+Un movimiento es un par ordenado $\left\langle inicio, destino\right\rangle \in Point \times Point$
+\end{definition}
+
+\begin{definition}
+Un movimiento válido para un jugador $P$ es un subconjunto de movimientos tal que el casillero de destino se encuentra libre (su valor es $0$) y el de inicio pertenece al jugador $P$ (su valor es $P$).
+\end{definition}
+
+
+\begin{definition}
+Un casillero es el valor del tablero en un punto $p$.
+\end{definition}
+
+\begin{definition}
+El casillero vacío es equivalente al valor $0$ en el tablero para el punto $p$.
+\end{definition}
+
+\begin{definition}
+Una mancha es uno de los tres posibles estados $\in Manchas$ de una celda en un punto del tablero:
+\begin{itemize}
+\item[-1] \emph{Humano}: representado por la letra \textit{H}.
+\item[0] \emph{Vacío}: representado por el espacio en blanco.
+\item[1] \emph{Computadora}: representado por la letra \textit{C}.
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Se define distancia como:
+\begin{equation}
+    distancia(a, b) = \max(|a[x] - b[x]|, |a[y] - b[y]|)
+\end{equation}
+
+Donde $a$ y $b$ son los puntos en cuestión (tuplas de dos componentes $\mathbb{N}_{0}$), y $a[x]$ significa la componente $x$ de $a$.
+\end{definition}
+
+Adicionalmente, al final de cada movimiento la mancha en el destino \textit{infecta} a las vecinas según estas reglas:
+\begin{itemize}
+\item Si el casillero no se encuentra ocupado entonces se deja libre (no se altera).
+\item Si el casillero se encuentra ocupado, la mancha presente en éste cambia al color de la mancha que infecta.
+\end{itemize}
+
+\begin{definition}
+Un \textit{Tablero Terminal} es un tablero tal que para algún jugador no existen movimientos válidos para ninguna de sus manchas.
+\end{definition}
+
+\section{Teor\'ia de Juegos}
+\subsection{Juegos de Suma Cero}
+\section{Estructuras de Datos}
+\section{Algoritmos}
+\subsection{Minimax (Na\"ive)}
+\subsection{Minimax con Poda Alfa-Beta}
+\section{Comparaciones y pruebas}
+\section{Implementaci\'on}
+\section{Conclusiones}
+\section{Anexo}
+\subsection{Implementación alternativa del núcleo del Solver}
+\begin{thebibliography}{9}
+  % type bibliography here
+  \bibitem[Doe]{doe} text goes here 
+\end{thebibliography}
+\end{document}
