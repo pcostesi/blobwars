@@ -60,13 +60,23 @@ Un punto es un par ordenado $\left\langle x, y\right\rangle \in Point$, donde $P
 \end{definition}
 
 \begin{definition}
-Un movimiento es un par ordenado $\left\langle inicio, destino\right\rangle \in Point \times Point$
+Se llama $Movements$ al siguiente conjunto:
+\begin{equation}
+Movements = Point \times Point
+\end{equation}
 \end{definition}
 
 \begin{definition}
-Un movimiento válido para un jugador $P$ es un subconjunto de movimientos tal que el casillero de destino se encuentra libre (su valor es $0$) y el de inicio pertenece al jugador $P$ (su valor es $P$).
+Un movimiento es un par ordenado $\left\langle inicio, destino\right\rangle \in Movements$.
+
+Notación: $inicio \rightarrow destino$.
 \end{definition}
 
+\begin{definition}
+Un movimiento válido para un jugador $p$ es un movimiento tal que el casillero de destino $d$ se encuentra libre (su valor es $0$) y el de inicio $s$ pertenece al jugador $p$ (su valor es $p$).
+
+Notación: $v_{s \rightarrow d}$
+\end{definition}
 
 \begin{definition}
 Un casillero es el valor del tablero en un punto $p$.
@@ -101,7 +111,35 @@ Adicionalmente, al final de cada movimiento la mancha en el destino \textit{infe
 \end{itemize}
 
 \begin{definition}
+Aplicar un movimiento $m$ para un jugador $p$ a un tablero $b$ es aplicar las reglas de movimiento seguido de \textit{infectar} el casillero de destino. Se obtiene como resultado un tablero $b'$
+\end{definition}
+
+\begin{definition}
 Un \textit{Tablero Terminal} es un tablero tal que para algún jugador no existen movimientos válidos para ninguna de sus manchas.
+\begin{equation}
+terminal(b) \Leftrightarrow \nexists m \in v_{s \rightarrow d}(p) \forall s, d \in Movements
+\end{equation}
+Donde $b$ es el tablero, $m$ un movimiento válido, $p$ un jugador y $x$ un punto.
+\end{definition}
+
+El juego termina cuando el tablero se completa o cuando el siguiente jugador no puede realizar un movimiento válido. Vale destacar que la primera condición implica la segunda.
+
+\begin{definition}
+Un turno es aplicar un movimiento válido $m$ para un jugador $p$ a un tablero $b$ y retornar el tablero resultante $b'$:
+\begin{equation}
+b' = turno(b, p, m)
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Un \textit{ply} es un grupo de dos turnos que resulta de la aplicación recursiva de éstos para dos movimientos de jugadores alternados $m_p$ y $m'_{p'}$. En otras palabras: 
+\begin{equation}
+ply(b, m_p, m_{p'}) = turno(turno(b, p, m_p), p', m_{p'})
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Una partida es una serie finita $G$ de $n$ \textit{plies} tal que aplicar el último movimiento ($m^{n}_{s \rightarrow p}$) al tablero $b^{n - 1}$ resulta en un tablero terminal $b^{n}$; siendo $b^{n}$ el único tablero terminal en $G$.
 \end{definition}
 
 \section{Teoría de Juegos}
