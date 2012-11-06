@@ -161,8 +161,17 @@ Cabe destacar que el modelo no es aplicable a todo tipo de modelo válido, ya qu
 
 El problema más grave es que los actores racionales no respeten el Equilibrio de Nash. \cite{ram}
 
+\subsection{Equilibrio de Nash}
+El Equilibrio de Nash es un concepto de solución para un juego no cooperativo de dos o más jugadores, en donde todos ellos tienen conocimiento de las estrategias de equilibrio de los otros.
+
+Si cada jugador ha elegido una estrategia y ningún jugador puede beneficiarse de un cambio de la misma cuando sus oponentes mantienen las de ellos, entonces se afirma que dicho conjunto de estrategias y sus ganancias individuales constituye un Equilibrio de Nash. \cite{osb}
+
+Si un jugador $A$ tiene una estrategia dominante $S_A$ entonces existe un Equilibrio de Nash en donde $A$ juega $S_A$. En el caso de ser dos jugadores $A$ y $B$, existe un Equilibrio en donde $A$ juega $S_A$ y $B$ juega la mejor estrategia en respuesta a $S_A$ (puede no ser única). Si $S_A$ es una estrategia estrictamente dominante, $A$ juega $S_A$ en todo Equilibrio de Nash. Si ambos $A$ y $B$ tienen estrategias estricamente dominantes, existe un único Equilibrio de Nash en donde ambos jugadores juegan sus estrategias dominantes respectivas. 
 
 \subsection{Juegos de Suma Cero}
+
+Los juegos de suma cero responden a la premisa básica de que las ganancias de un jugador se equiparan a la pérdida conjunta de los otros. Asume que todos los jugadores conocen el Equilibrio de Nash de los otros.
+
 \section{Estructuras de Datos}
 \section{Algoritmos}
 \subsection{Minimax (Na\"ive)}
@@ -197,6 +206,8 @@ El problema más grave es que los actores racionales no respeten el Equilibrio d
   \bibitem[RAM]{ram} Chen, H.-C., Friedman, J. W. \& Thisse, J.-F. (1997) Boundedly rational Nash
 equilibrium: A probablistic choice approach. Games and Economic Behavior
 18:32– 54.
+
+  \bibitem[OSB]{osb} Osborne, Martin J., and Ariel Rubinstein. A Course in Game Theory. Cambridge, MA: MIT, 1994. Print.
 
 \end{thebibliography}
 \end{document}
