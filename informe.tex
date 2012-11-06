@@ -132,7 +132,7 @@ b' = turno(b, p, m)
 \end{definition}
 
 \begin{definition}
-Un \textit{ply} es un grupo de dos turnos que resulta de la aplicación recursiva de éstos para dos movimientos de jugadores alternados $m_p$ y $m'_{p'}$. En otras palabras: 
+Un \textit{ply} es un grupo de dos turnos que resulta de la aplicación recursiva de éstos para dos movimientos de jugadores alternados $m_p$ y $m'_{p'}$. En otras palabras:
 \begin{equation}
 ply(b, m_p, m_{p'}) = turno(turno(b, p, m_p), p', m_{p'})
 \end{equation}
@@ -148,10 +148,10 @@ La Teoría de Juegos es un campo de la matemática que estudia mediante modelos 
 El análisis de estos modelos implica una característica diferencial con respecto a otros campos como la Teoría de la Decisión en cuanto a que los actores en la Teoría de Juegos no tienen costos e incentivos prefijados, sino que varían con las acciones de sus oponentes. También asume que cada jugador elige según un criterio de \textit{fitness} o ventaja sobre su situación y no mediante un set de reglas independiente de la misma.
 
 \begin{definition}
-\textit{Fitness} es una función de probabilidad que toma un estado o conjunto de estímulos y devuelve una valoración escalar. 
+\textit{Fitness} es una función de probabilidad que toma un estado o conjunto de estímulos y devuelve una valoración escalar.
 \end{definition}
 
-Mediante el ingreso de estímulos a una constelación de entradas sensoriales, el actor racional genera una distribución estadística de probabilidad sobre distintos resultados con un \textit{fitness} asociado. \cite[p. 4]{bbs} 
+Mediante el ingreso de estímulos a una constelación de entradas sensoriales, el actor racional genera una distribución estadística de probabilidad sobre distintos resultados con un \textit{fitness} asociado. \cite[p. 4]{bbs}
 
 Los actores racionales escogen el resultado con mejor \textit{fitness} para un entorno determinado. Por lo tanto, si un actor es presentado con una opción $A$ de menor \textit{fitness} que $B$ escogerá $B$, y si es presentado con dicho $B$ de menor \textit{fitness} que $C$ entonces escogerá $C$ por sobre $A$ y $B$. Esto es llamado \textit{Consistencia de Elección}. \cite[p. 4]{bbs}
 
@@ -166,7 +166,7 @@ El Equilibrio de Nash es un concepto de solución para un juego no cooperativo d
 
 Si cada jugador ha elegido una estrategia y ningún jugador puede beneficiarse de un cambio de la misma cuando sus oponentes mantienen las de ellos, entonces se afirma que dicho conjunto de estrategias y sus ganancias individuales constituye un Equilibrio de Nash. \cite{osb}
 
-Si un jugador $A$ tiene una estrategia dominante $S_A$ entonces existe un Equilibrio de Nash en donde $A$ juega $S_A$. En el caso de ser dos jugadores $A$ y $B$, existe un Equilibrio en donde $A$ juega $S_A$ y $B$ juega la mejor estrategia en respuesta a $S_A$ (puede no ser única). Si $S_A$ es una estrategia estrictamente dominante, $A$ juega $S_A$ en todo Equilibrio de Nash. Si ambos $A$ y $B$ tienen estrategias estricamente dominantes, existe un único Equilibrio de Nash en donde ambos jugadores juegan sus estrategias dominantes respectivas. 
+Si un jugador $A$ tiene una estrategia dominante $S_A$ entonces existe un Equilibrio de Nash en donde $A$ juega $S_A$. En el caso de ser dos jugadores $A$ y $B$, existe un Equilibrio en donde $A$ juega $S_A$ y $B$ juega la mejor estrategia en respuesta a $S_A$ (puede no ser única). Si $S_A$ es una estrategia estrictamente dominante, $A$ juega $S_A$ en todo Equilibrio de Nash. Si ambos $A$ y $B$ tienen estrategias estricamente dominantes, existe un único Equilibrio de Nash en donde ambos jugadores juegan sus estrategias dominantes respectivas.
 
 \subsection{Juegos de Suma Cero}
 
@@ -196,23 +196,38 @@ Tal que:
 \section{Algoritmos}
 \subsection{Minimax (Na\"ive)}
 \subsection{Minimax con Poda Alfa-Beta}
-\section{Problemas encontrados}
+\section{Problemas encontrados y decisiones tomadas}
 \subsection{Uso eficiente de memoria}
   Inicialmente cuando se desarrollaron las clases del juego, se notó que consumían memoria demás.
   Eso se vió demostrado ya que el algoritmo propuesto para minimax no podía llegar hasta el nivel 5.
   A continuación se detallan los puntos críticos en donde se tuvo que repensar la implementación.
 
   \subsection{Clase Board}
-    En un principio, la forma utilizada para representar el board fue utilizando objetos Tile, del cual heredaban EmptyTile y BlobTile.
-    Es decir, que la cantidad de referencias de cada tablero era siempre de 64 $(8 * 8)$.  A la vez, cada BlobTile contenía una referencia a un Player.
+    En un principio, la forma utilizada para representar el board fue utilizando un array de $Tile$, del cual heredaban $EmptyTile$ y $BlobTile$.
+    Es decir, que la cantidad de referencias de cada tablero era constante.
+    Por cada tablero se guardaban 64 $(8 * 8)$ referencias a algún $Tile$.  A la vez, cada $BlobTile$ contenía una referencia a un $Player$.
 
-    Para iterar facilmente por los tiles de un Player y obtener sus jugadas posibles se contó con un $HashMap<Player, ArrayList<Point>>$, y un método para acceder a esos  puntos en donde se encontraban los tiles de cada jugador.
+    Para iterar facilmente por los tiles de un Player y obtener sus jugadas posibles se contó con un $HashMap<Player, ArrayList<Point>>$, y un método para acceder a esos  puntos en donde se encontraban los tiles de cada jugador. Lo cual se descartó para hacer uso más eficiente de la memoria.
 
-    Para hacer uso más eficiente de la memoria, se decidió implementar el Board cómo un array primitivo de Player, y un método para convertir de Point al indice de ese array.
+    Al eliminar el mapa que referenciaba jugador con sus tiles, se decidió implementar el Board cómo un array primitivo de Player, y un método para convertir de Point al indice de ese array.
     En este caso se hizo un cambio que consume menos memoria al haber menos referencias y objetos en tiempo de ejecucón, aunque es cierto que esa solución hace que haya que calcular más en tiempo de ejecución.
 
     El cambio más radical en cuanto a cantidad de memoria consumida, se logró implementando un iterador de Board para ser utilizado al generar los tableros con
     las jugadas posibles a partir de cierto Board.
+
+  \subsection{Clase Point}
+    La implementación de esta clase fue variando a lo largo del desarrollo del proyecto. En una primera instancia se utilizo la clase $Point$ que provee Java.
+    Al ver que estabamos desperdiciando memoria utilizando muchos objetos $Point$ con los mismos valores $(x, y)$, se decidió implementar una clase $Point$ propia.
+    La clase contaba con un método de clase $getInstance(int, int)$, si el punto ya estaba creado se devolvía una referencia e él. Sino, se creaba un punto nuevo.
+    La implementación de $getInstance()$ se descartó después de haber implementado un iterador en la clase Board, ya que los $Point$ dejaron de ser tantos en memoria.
+
+    Esta clase, ya no sería de de dos coordenads $double$, sino que de $int$. Los beneficios fueron altos ya que además de ocupar menos memoria, no se debía castear de $double$ a $int$ para acceder al array.
+
+
+
+
+
+
 
 \section{Comparaciones y pruebas}
 \section{Implementación}
@@ -222,7 +237,7 @@ Tal que:
 \begin{thebibliography}{9}
   % type bibliography here
   \bibitem[BBS]{bbs} \emph{A framework for the unification of the behavioral sciences}, Herbert Gintis, Behavioral and Brain Sciences (2007) 30:1-61
-  
+
   \bibitem[RAM]{ram} Chen, H.-C., Friedman, J. W. \& Thisse, J.-F. (1997) Boundedly rational Nash
 equilibrium: A probablistic choice approach. Games and Economic Behavior
 18:32– 54.
