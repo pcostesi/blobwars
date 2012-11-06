@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper,notitlepage,twocolumn,draft]{article}
+\documentclass[10pt,a4paper,notitlepage,draft]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 
@@ -32,7 +32,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-Se presenta una introducción a la Teoría de Juegos y Juegos de Suma Cero. Éstos son juegos de dos jugadores con turnos y un balance entre sus ganancias y pérdidas. La estrategia de resolución analizada en este informe es Minimax, un algoritmo de búsqueda en profundidad limitada, junto con la heurística de Poda Alfa-Beta. Se detalla la implementación y resultados prácticos.
+Se presenta una introducción a la Teoría de Juegos y Juegos de Suma Cero. Estos son juegos de dos jugadores con turnos y un balance entre sus ganancias y pérdidas. La estrategia de resolución analizada en este informe es Minimax, un algoritmo de búsqueda en profundidad limitada, junto con la heurística de Poda Alfa-Beta. Se detalla la implementación y resultados prácticos.
 \end{abstract}
 
 \section{Introducción}
@@ -40,7 +40,7 @@ El Trabajo Práctico Especial de la cátedra de Estructuras de Datos y Algoritmo
 
 
 \subsection{BlobWars}
-\textit{BlobWars} es un juego de dos jugadores por turnos en un tablero de 8x8. El objetivo es lograr la mayor cantidad de piezas sobre el tablero para cuando alguno de los jugadores no pueda realizar nuevos movimientos.
+\textit{BlobWars} es un juego de dos jugadores por turnos en un tablero de 8x8. El objetivo es lograr la mayor cantidad de piezas sobre el tablero cuando alguno de los jugadores no pueda realizar nuevos movimientos.
 
 Los posibles movimientos de una mancha (\textit{blob}) son siempre hacia casilleros vacíos y cumplen estas reglas:
 \begin{itemize}
@@ -75,7 +75,7 @@ Notación: $inicio \rightarrow destino$.
 \begin{definition}
 Un movimiento válido para un jugador $p$ es un movimiento tal que el casillero de destino $d$ se encuentra libre (su valor es $0$) y el de inicio $s$ pertenece al jugador $p$ (su valor es $p$).
 
-Notación: $v_{s \rightarrow d}$
+Notación: $v_{s \rightarrow d}(p)$
 \end{definition}
 
 \begin{definition}
@@ -119,7 +119,7 @@ Un \textit{Tablero Terminal} es un tablero tal que para algún jugador no existe
 \begin{equation}
 terminal(b) \Leftrightarrow \nexists m \in v_{s \rightarrow d}(p) \forall s, d \in Movements
 \end{equation}
-Donde $b$ es el tablero, $m$ un movimiento válido, $p$ un jugador y $x$ un punto.
+Donde $b$ es el tablero, $m$ un movimiento válido, $p$ un jugador y $s, d$ un movimiento.
 \end{definition}
 
 El juego termina cuando el tablero se completa o cuando el siguiente jugador no puede realizar un movimiento válido. Vale destacar que la primera condición implica la segunda.
@@ -143,6 +143,25 @@ Una partida es una serie finita $G$ de $n$ \textit{plies} tal que aplicar el úl
 \end{definition}
 
 \section{Teoría de Juegos}
+La Teoría de Juegos es un campo de la matemática que estudia mediante modelos sistemas definidos por reglas de acción con incentivos (juegos), y proporciona estrategias para llevar a cabo procesos de decisión. Es un campo de estudio estrechamente ligado a las ciencias del comportamiento y las ciencias que las utilizan, como ser: economía, biología, psicología, antropología y ciencias políticas. \cite[p. 1]{bbs}
+
+El análisis de estos modelos implica una característica diferencial con respecto a otros campos como la Teoría de la Decisión en cuanto a que los actores en la Teoría de Juegos no tienen costos e incentivos prefijados, sino que varían con las acciones de sus oponentes. También asume que cada jugador elige según un criterio de \textit{fitness} o ventaja sobre su situación y no mediante un set de reglas independiente de la misma.
+
+\begin{definition}
+\textit{Fitness} es una función de probabilidad que toma un estado o conjunto de estímulos y devuelve una valoración escalar. 
+\end{definition}
+
+Mediante el ingreso de estímulos a una constelación de entradas sensoriales, el actor racional genera una distribución estadística de probabilidad sobre distintos resultados con un \textit{fitness} asociado. \cite[p. 4]{bbs} 
+
+Los actores racionales escogen el resultado con mejor \textit{fitness} para un entorno determinado. Por lo tanto, si un actor es presentado con una opción $A$ de menor \textit{fitness} que $B$ escogerá $B$, y si es presentado con dicho $B$ de menor \textit{fitness} que $C$ entonces escogerá $C$ por sobre $A$ y $B$. Esto es llamado \textit{Consistencia de Elección}. \cite[p. 4]{bbs}
+
+Este modelo se llama \textit{BCP} (\textit{beliefs, preferences, and constraints} \cite[p. 3]{bbs}), e implica que distintas decisiones afectan a los resultados de las valuaciones de \textit{fitness} con distinto grado de probabilidad. La Teoría de Juegos amplía el modelo para incorporar varios jugadores, y llama Estrategias a las \textit{BCP}. Los jugadores cuentan con el conocimiento de las reglas del juego, la naturaleza de sus contrincantes y estrategias disponibles. Para cada combinación de decisiones, para cada jugador, el juego le asigna una distribución de \textit{individual payoffs} (ganancias individuales). Con esto, la Teoría de Juegos logra predecir el comportamiento de cada jugador (al asumir que maximizará sus ganancias, al ser un actor racional). \cite[p. 8]{bbs}
+
+Cabe destacar que el modelo no es aplicable a todo tipo de modelo válido, ya que en la práctica puede ocurrir que los actores no sean enteramente racionales, desconozcan parte de la información en un estado determinado o no sean consistentes en sus decisiones (por ejemplo, un animal que se vuelve adicto a un alimento determinado). \cite[p. 9 - 11, ]{bbs}
+
+El problema más grave es que los actores racionales no respeten el Equilibrio de Nash. \cite{ram}
+
+
 \subsection{Juegos de Suma Cero}
 \section{Estructuras de Datos}
 \section{Algoritmos}
@@ -173,6 +192,11 @@ Una partida es una serie finita $G$ de $n$ \textit{plies} tal que aplicar el úl
 \subsection{Implementación alternativa del núcleo del Solver}
 \begin{thebibliography}{9}
   % type bibliography here
-  \bibitem[Doe]{doe} text goes here
+  \bibitem[BBS]{bbs} \emph{A framework for the unification of the behavioral sciences}, Herbert Gintis, Behavioral and Brain Sciences (2007) 30:1-61
+  
+  \bibitem[RAM]{ram} Chen, H.-C., Friedman, J. W. \& Thisse, J.-F. (1997) Boundedly rational Nash
+equilibrium: A probablistic choice approach. Games and Economic Behavior
+18:32– 54.
+
 \end{thebibliography}
 \end{document}
