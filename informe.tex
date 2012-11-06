@@ -170,7 +170,27 @@ Si un jugador $A$ tiene una estrategia dominante $S_A$ entonces existe un Equili
 
 \subsection{Juegos de Suma Cero}
 
-Los juegos de suma cero responden a la premisa básica de que las ganancias de un jugador se equiparan a la pérdida conjunta de los otros. Asume que todos los jugadores conocen el Equilibrio de Nash de los otros.
+Los juegos de suma cero responden a la premisa básica de que las ganancias de un jugador se equiparan a la pérdida conjunta de los otros. Asume que existe un Equilibrio de Nash para un el mismo.
+
+\begin{definition}
+Una estrategia mixta es un tipo de estrategia donde un jugador escoge una columna de la matriz de ganancias del juego, mientras que el adversario escoge una fila. El conjunto de valores de dicha celda corresponde a las ganancias individuales para cada jugador.
+\end{definition}
+
+En el caso de los juegos de dos jugadores, un Equilibrio de Nash y Minimax devuelven la misma solución, donde constituye una estrategia mixta.
+
+La resolución de los mismos puede llevarse a cabo mediante programación lineal, en donde dada una matriz de ganancias $M$, tal que el elemento $M_{i, j}$ es la ganancia individual cuando el jugador que minimiza escoge la estrategia en la fila $i$ y el que maximiza escoge la estrategia en la columna $j$, se debe encontrar un vector $u$ que cumpla:
+
+Minimizar:
+\begin{equation}
+\sum_{i} u_i
+\end{equation}
+
+Tal que:
+\begin{enumerate}
+\item $u \geq 0$
+\item $M u \geq 1$
+\end{enumerate}
+\cite{mic}
 
 \section{Estructuras de Datos}
 \section{Algoritmos}
@@ -209,5 +229,6 @@ equilibrium: A probablistic choice approach. Games and Economic Behavior
 
   \bibitem[OSB]{osb} Osborne, Martin J., and Ariel Rubinstein. A Course in Game Theory. Cambridge, MA: MIT, 1994. Print.
 
+  \bibitem[MIC]{mic} Bowles, Samuel (2004). Microeconomics: Behavior, Institutions, and Evolution. Princeton University Press. pp. 33–36. ISBN 0-691-09163-3.
 \end{thebibliography}
 \end{document}
