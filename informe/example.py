@@ -69,9 +69,9 @@ class Board(Matrix):
     HUMAN = -1
     EMPTY = 0
 
-    def __init__(self, size=8, matrix=None):
+    def __init__(self, size=8, matrix=None, empty=False):
         super(Board, self).__init__(size, matrix)
-        if not matrix:
+        if not matrix and not empty:
             logging.debug("Creating pre-filled default board.")
             self[0, 0] = Board.HUMAN
             self[0, 7] = Board.HUMAN
@@ -165,7 +165,8 @@ def minimax(board, level, maximize=True, is_computer=True):
             score = local
             best_move = move
             logging.debug("New score: %i, move: %s", score, move)
-            
+    if best_move is None:
+        return board.score, None
     logging.debug("Score: %d, \tSelected move: %s", score, best_move)
     return score, best_move
     

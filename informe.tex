@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper,notitlepage,draft]{article}
+\documentclass[10pt,a4paper,notitlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 
@@ -8,6 +8,7 @@
 \usepackage{graphicx}
 \usepackage{authblk}
 \usepackage{makeidx}
+\usepackage{verbatim}
 
 \usepackage[utf8]{inputenc}
 \renewcommand\Authand{ y }
@@ -23,6 +24,103 @@
 \newenvironment{definition}[1][Definición]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
 
+
+%%%% PYGMENTS
+
+\usepackage{fancyvrb}
+\usepackage{color}
+
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.25,0.82}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.50,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+%%%%
 
 %\email{khanna@alu.itba.edu.ar, pcostesi@ieee.org}
 
@@ -193,11 +291,137 @@ Tal que:
 \cite{mic}
 
 \section{Estructuras de Datos}
+Para representar el árbol de juego se utilizó el propio stack de la máquina, y se aprovechó que la generación de tableros pudo ser realizada en un iterador. Esto supuso un ahorro en la implementación de estructuras caras como HashMaps y Listas Enlazadas. El ahorro no sólo fue espacial, sino que también temporal ya que no se necesitó crear gran cantidad de estructuras por cada nodo.
+
+El tablero se representó mediante un array de objetos (referencias) a Player. Como el tablero tiene una altura fija, convertir los índices a posiciones y vice versa resultó sencillo y barato. Este tipo de representación se decidió por una cuestión de simplicidad (ahorrar la creación de Arrays anidados) y por la indirección que genera desreferenciar un objeto.
+
+Point se implementó al principio como una clase con un patrón constructor que almacenaba las instancias de puntos anteriormente entregados para reducir el gasto de memoria. Al eliminar el uso de las listas como almacenamiento de tableros hijos, el uso de puntos en un momento dado en memoria se redujo y se volvió un simple contenedor de enteros.
+
+Movement se implementó de forma tal en que ahorrara escribir $Pair\left<x, y\right>$. Es otro simple contenedor con un método que retorna la distancia entre los puntos del par.
+
+Pair se implementó a modo de una tupla de dos objetos.
+
+
+
 \section{Algoritmos}
+
+Se implementaron dos familias de algoritmos, cada una con dos sub-categorías de heurística:
+\begin{itemize}
+\item TBID\{ABP, L\}Minimax: familia de algoritmos basados en tiempo, con \textit{Iterative Deepening}.
+\item \{ABP, L\}Minimax: familia de algoritmos basados en nivel.
+\end{itemize}
+
+Las subcategorías de heurística corresponden a:
+\begin{itemize}
+\item ABP: \textit{Alpha Beta Pruning}, o Poda Alfa Beta. Elimina estados de búsqueda si la Ventana Alfa Beta se cierra.
+\item L: \textit{Level}, Na\"ive Minimax basado en nivel (sin poda).
+\end{itemize}
+
+Si bien \textit{ABP} es similar a \textit{L} en su implementación, algunos detalles del lenguaje evitaron la reutilización directa del código. 
+
 \subsection{Minimax (Na\"ive)}
+<<<<<<< Updated upstream
   Minimax es un algoritmo que se utiliza para elegir el estado más conveniente al que se puede acceder.
   La conveniencia de cada estado, o puntaje, se define para cada problema en particular.
 \subsection{Minimax con Poda Alfa-Beta}
+||||||| merged common ancestors
+\subsection{Minimax con Poda Alfa-Beta}
+=======
+Minimax se basa en el concepto de Equilibrio de Nash y Juegos de Suma Cero, donde \textit{max}imizar las ganancias significa \textit{min}imizar las pérdidas. Asume que cada jugador conoce las reglas del juego, las estrategias del oponente y que siempre actuará con la mejor disponible (ya que se encuentra en equilibrio).
+
+La versión teórica de minimax no está determinada por nivel y evalúa hasta llegar a un tablero terminal. Sin embargo, el problema de generar tableros entra en la categoría NP, por lo que es imprático implementarlo de este modo.
+
+El siguiente es un ejemplo (funcional) en Python:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{minimax}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{maximize}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{is\PYZus{}computer}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{""" Naïve minimax solver. """}
+    \PY{c}{\PYZsh{} set the worst score possible for this player.}
+    \PY{n}{score} \PY{o}{=} \PY{o}{-}\PY{n}{board}\PY{o}{.}\PY{n}{max\PYZus{}score} \PY{k}{if} \PY{n}{maximize} \PY{k}{else} \PY{n}{board}\PY{o}{.}\PY{n}{max\PYZus{}score}
+    \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n+nb+bp}{None}
+    \PY{k}{for} \PY{n}{child}\PY{p}{,} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{children}\PY{p}{(}\PY{n}{is\PYZus{}computer}\PY{o}{=}\PY{n}{is\PYZus{}computer}\PY{p}{)}\PY{p}{:}
+        \PY{n}{local}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{minimax}\PY{p}{(}\PY{n}{child}\PY{p}{,} \PY{n}{level} \PY{o}{-} \PY{l+m+mi}{1}\PY{p}{,} \PY{o+ow}{not} \PY{n}{maximize}\PY{p}{,} \PY{o+ow}{not} \PY{n}{is\PYZus{}computer}\PY{p}{)}
+        \PY{c}{\PYZsh{} update the score when a better local solution is found}
+        \PY{k}{if} \PY{p}{(}\PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZlt{}} \PY{n}{local}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{o+ow}{not} \PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZgt{}} \PY{n}{local}\PY{p}{)}\PY{p}{:}
+            \PY{n}{score} \PY{o}{=} \PY{n}{local}
+            \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
+    \PY{c}{\PYZsh{} return the score when a terminal board has been reached}
+    \PY{k}{if} \PY{n}{best\PYZus{}move} \PY{o+ow}{is} \PY{n+nb+bp}{None}\PY{p}{:}
+        \PY{k}{return} \PY{n}{board}\PY{o}{.}\PY{n}{score}\PY{p}{,} \PY{n+nb+bp}{None}
+    \PY{k}{return} \PY{n}{score}\PY{p}{,} \PY{n}{best\PYZus{}move}
+\end{Verbatim}
+
+Nota: el ejemplo, al igual que los subsiguientes, devuelve un \textit{score} con un movimiento.
+\newpage
+
+\subsection{Minimax (Level)}
+
+Minimax Level (por Niveles) agrega una condición de corte al llegar a un nivel máximo dentro del árbol de llamados recursivo.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{minimax}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{level}\PY{p}{,} \PY{n}{maximize}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{is\PYZus{}computer}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{""" Naïve minimax solver, using level cut-off. """}
+    \PY{k}{if} \PY{n}{level} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{return} \PY{n}{board}\PY{o}{.}\PY{n}{score}\PY{p}{,} \PY{n+nb+bp}{None}
+    \PY{c}{\PYZsh{} set the worst score possible for this player.}
+    \PY{n}{score} \PY{o}{=} \PY{o}{-}\PY{n}{board}\PY{o}{.}\PY{n}{max\PYZus{}score} \PY{k}{if} \PY{n}{maximize} \PY{k}{else} \PY{n}{board}\PY{o}{.}\PY{n}{max\PYZus{}score}
+    \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n+nb+bp}{None}
+    \PY{k}{for} \PY{n}{child}\PY{p}{,} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{children}\PY{p}{(}\PY{n}{is\PYZus{}computer}\PY{o}{=}\PY{n}{is\PYZus{}computer}\PY{p}{)}\PY{p}{:}
+        \PY{n}{local}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{minimax}\PY{p}{(}\PY{n}{child}\PY{p}{,} \PY{n}{level} \PY{o}{-} \PY{l+m+mi}{1}\PY{p}{,} \PY{o+ow}{not} \PY{n}{maximize}\PY{p}{,} \PY{o+ow}{not} \PY{n}{is\PYZus{}computer}\PY{p}{)}
+        \PY{c}{\PYZsh{} update the score when a better local solution is found}
+        \PY{k}{if} \PY{p}{(}\PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZlt{}} \PY{n}{local}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{o+ow}{not} \PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZgt{}} \PY{n}{local}\PY{p}{)}\PY{p}{:}
+            \PY{n}{score} \PY{o}{=} \PY{n}{local}
+            \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
+    \PY{k}{if} \PY{n}{best\PYZus{}move} \PY{o+ow}{is} \PY{n+nb+bp}{None}\PY{p}{:}
+        \PY{k}{return} \PY{n}{board}\PY{o}{.}\PY{n}{score}\PY{p}{,} \PY{n+nb+bp}{None}
+    \PY{k}{return} \PY{n}{score}\PY{p}{,} \PY{n}{best\PYZus{}move}
+\end{Verbatim}
+\newpage
+\subsection{ABPMinimax (Minimax con Poda Alfa-Beta)}
+
+La poda Alfa Beta es una modificación al algoritmo original de Minimax (pero se presenta en el informe como una versión de LMinimax modificada), de forma tal donde existe una \textit{Ventana Alfa Beta} de operación. Dicha ventana está formada por dos variables $\alpha$ y $\beta$, que corresponden respectivamente con el jugador que maximiza y el que minimiza.
+
+La poda tiene la característica de devolver una solución con el mismo costo que Minimax, con la diferencia de no tener que explorar soluciones innecesarias.
+
+El primer llamado se realiza bajo los valores normales de Minimax (el \textit{score} mínimo posible para el jugador que maximiza es asignado a $\alpha$ y el \textit{score} máximo posible para el jugador que minimiza es asignado a $\beta$).
+
+Para la etapa de maximización, ABPMinimax explora las posibles soluciones y actualiza el valor de $\alpha$ de forma tal que quede con el máximo \textit{score} hasta el momento. La condición de corte (llamada \textit{Beta Cut-Off}) añadida es que si $score \geq \beta$ deja de explorar soluciones, ya que el valor excede la ventana $\alpha \leq score \leq \beta$.
+
+Para la etapa de minimización, actualiza el valor de $\beta$ con el mínimo \textit{score} hasta el momento. La condición de corte (\textit{Alpha Cut-Off}) es: $score \leq \alpha$.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{alphabeta}\PY{p}{(}\PY{n}{board}\PY{p}{,} \PY{n}{level}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} \PY{n}{maximize}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{is\PYZus{}computer}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{""" Minimax with Alpha-Beta Pruning. """}
+    \PY{k}{if} \PY{n}{level} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+        \PY{k}{return} \PY{n}{board}\PY{o}{.}\PY{n}{score}\PY{p}{,} \PY{n+nb+bp}{None}
+    \PY{c}{\PYZsh{} we base the score on the previous runs (alpha-beta window)}
+    \PY{n}{score} \PY{o}{=} \PY{n}{alpha} \PY{k}{if} \PY{n}{maximize} \PY{k}{else} \PY{n}{beta}
+    \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n+nb+bp}{None}
+    \PY{k}{for} \PY{n}{child}\PY{p}{,} \PY{n}{move} \PY{o+ow}{in} \PY{n}{board}\PY{o}{.}\PY{n}{children}\PY{p}{(}\PY{n}{is\PYZus{}computer}\PY{p}{)}\PY{p}{:}
+        \PY{c}{\PYZsh{} find a new local solution}
+        \PY{n}{local}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{alphabeta}\PY{p}{(}\PY{n}{child}\PY{p}{,} \PY{n}{level} \PY{o}{-} \PY{l+m+mi}{1}\PY{p}{,} \PY{n}{alpha}\PY{p}{,} \PY{n}{beta}\PY{p}{,} 
+                \PY{o+ow}{not} \PY{n}{maximize}\PY{p}{,} \PY{o+ow}{not} \PY{n}{is\PYZus{}computer}\PY{p}{)}
+        \PY{c}{\PYZsh{} Update the score when a better local solution is found}
+        \PY{k}{if} \PY{p}{(}\PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZlt{}} \PY{n}{local}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{o+ow}{not} \PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZgt{}} \PY{n}{local}\PY{p}{)}\PY{p}{:}
+            \PY{n}{score} \PY{o}{=} \PY{n}{local}
+            \PY{n}{best\PYZus{}move} \PY{o}{=} \PY{n}{move}
+        \PY{c}{\PYZsh{} Update alpha or beta (this narrows the alpha-beta window)}
+        \PY{k}{if} \PY{n}{maximize}\PY{p}{:}
+            \PY{n}{alpha} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n}{score}\PY{p}{,} \PY{n}{alpha}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{beta} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n}{score}\PY{p}{,} \PY{n}{beta}\PY{p}{)}
+        \PY{c}{\PYZsh{} If we fall outside the alpha-beta window, return.}
+        \PY{k}{if} \PY{p}{(}\PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{beta}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{o+ow}{not} \PY{n}{maximize} \PY{o+ow}{and} \PY{n}{score} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{alpha}\PY{p}{)}\PY{p}{:}
+            \PY{k}{break}
+    \PY{k}{return} \PY{n}{score}\PY{p}{,} \PY{n}{best\PYZus{}move}
+\end{Verbatim}
+\newpage
+\subsection{TBID* (Time Bound Iterative Deepening)}
+
+\textit{Iterative Deepening} es una técnica donde se ejecuta varias tiradas de un algoritmo con un aumento progresivo en algún parámetro (profundidad, en el caso de Minimax) mientras haya tiempo disponible. Se almacena sólo la solución de la ejecución completa con mayor profundidad.
+
+Dado que el tiempo de ejecución de Minimax varía según el tablero y la profundidad, \textit{Iterative Deepening} provee un marco estable temporal a expensas de estados explorados.
+
 \section{Problemas encontrados y decisiones tomadas}
 \subsection{Uso eficiente de memoria}
   Inicialmente cuando se desarrollaron las clases del juego, se notó que consumían memoria demás.
@@ -226,24 +450,209 @@ Tal que:
     Esta clase, ya no sería de de dos coordenads $double$, sino que de $int$. Los beneficios fueron altos ya que además de ocupar menos memoria, no se debía castear de $double$ a $int$ para acceder al array.
 
 
-
-
-
-
-
 \section{Comparaciones y pruebas}
+
+
+Se probó con dos tableros aleatorios distintos el tiempo de ejecución para las cuatro posibles combinaciones de \textit{solvers}.
+
+\subsection{ABPMinimax}
+El tablero 1:
+\begin{verbatim}
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| c |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c | c |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| h | c |   |   |   |   |   | c |
++---+---+---+---+---+---+---+---+
+|   |   | c | c | c |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+\end{verbatim}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Tablero & Jugador & Profundidad & Tiempo de Ejecución & Estados Explorados \\
+\hline
+\hline
+1&2&1&6ms&147\\
+\hline
+1&2&2&17ms&403\\
+\hline
+1&2&3&223ms&53298\\
+\hline
+1&2&4&878ms&119559\\
+\hline
+1&2&5&7037ms&9276453\\
+\hline
+1&2&6&31707ms&19059529\\
+\hline
+\end{tabular}
+
+\newpage
+\subsection{Level Minimax}
+
+El tablero 1:
+\begin{verbatim}
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| c |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c | c |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| h | c |   |   |   |   |   | c |
++---+---+---+---+---+---+---+---+
+|   |   | c | c | c |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+\end{verbatim}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Tablero & Jugador & Profundidad & Tiempo de Ejecución & Estados Explorados \\
+\hline
+\hline
+1&2&1&14ms&147\\
+\hline
+1&2&2&41ms&1405\\
+\hline
+1&2&3&736ms&152930\\
+\hline
+1&2&4&8474ms&5495678\\
+\hline
+\end{tabular}
+
+Nota: Level Minimax tiene un bug por el cual el nivel par no es correctamente reportado (min no suma correctamente la variable level). Los números de nivel han sido ajustados.
+
+\newpage
+\subsection{TBIDABPMinimax}
+El tablero 1:
+\begin{verbatim}
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| c |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c | c |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| h | c |   |   |   |   |   | c |
++---+---+---+---+---+---+---+---+
+|   |   | c | c | c |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+\end{verbatim}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Tablero & Jugador & Profundidad & Tiempo de Ejecución & Estados Explorados \\
+\hline
+\hline
+1&2&3&1001ms&53848\\
+\hline
+1&2&4&2000ms&173407\\
+\hline
+1&2&4&4001ms&173407\\
+\hline
+1&2&4&8002ms&173407\\
+\hline
+1&2&5&16000ms&9449860\\
+\hline
+1&2&5&32001ms&9449860\\
+\hline
+\end{tabular}
+
+Nota: Las implementaciones de \textit{TBID} no tienen en cuenta los estados explorados en las iteraciones que no fueron completadas, ya que no afectan al resultado del algoritmo.
+
+\newpage
+\subsection{TBIDLMinimax}
+El tablero 1:
+\begin{verbatim}
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| c |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   | c | c |   |   |   |   |
++---+---+---+---+---+---+---+---+
+| h | c |   |   |   |   |   | c |
++---+---+---+---+---+---+---+---+
+|   |   | c | c | c |   |   |   |
++---+---+---+---+---+---+---+---+
+|   |   |   |   |   |   |   |   |
++---+---+---+---+---+---+---+---+
+\end{verbatim}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Tablero & Jugador & Profundidad & Tiempo de Ejecución & Estados Explorados \\
+\hline
+\hline
+1&2&3&1001ms&154482\\
+\hline
+1&2&3&2000ms&154482\\
+\hline
+1&2&3&4000ms&154482\\
+\hline
+1&2&3&8000ms&154482\\
+\hline
+1&2&3&16001ms&154482\\
+\hline
+\end{tabular}
+
+Nota: Las implementaciones de \textit{TBID} no tienen en cuenta los estados explorados en las iteraciones que no fueron completadas, ya que no afectan al resultado del algoritmo.
+
+\newpage
 \section{Implementación}
+\subsection{Chain}
+Dado el uso extensivo de iteradores en el código, se sucitó la necesidad de una forma de concatenarlos. \texttt{Chain} se planteó como un \texttt{Iterable<E>} para un conjunto de \texttt{Iterable<E>}, que retornara un \texttt{Iterator<E>} con la concatenación de los iteradores de la lista de iterables.
+
+Está basada en la función \texttt{chain()} de \texttt{itertools} en la librería estándar de Python.
+ 
+\subsection{Paquete \texttt{optparse}}
+El parseo de la línea de comandos en Java resultó difícil de encarar mediante el uso crudo de \texttt{String[] args}. Se decidió crear un paquete con una clase \texttt{OptionParser} que fuera un contenedor de objetos \texttt{Option}, quienes fueron diseñados para realizar el parseo localmente.
+
+Dos subclases retornan distintos comportamientos para distintos tipos de opciones: \texttt{FlagOption} parsea opciones sin aridad, mientras que \texttt{ValuedOption} parsea opciones de ariedad arbitraria.
 \section{Conclusiones}
-Habiendo implementado la "inteligencia" de la computadora para el juego BlobWars con el algoritmo de Minimax, se pueden obtener algunas conclusiones:
-  \begin{itemize}
-    \item
-      El algoritmo Minimax con poda alfa-beta, aunque en teoría tiene la misma complejidad que su implementación sin poda,
-      en la práctica es mucho más rápido para llegar a más niveles.
-   \end{itemize}
 
 
+De las observaciones de los datos se puede destacar que:
+\begin{itemize}
+\item La heurística de Poda Alfa-Beta es efectiva y reduce el tiempo de ejecución y espacio en memoria (este último no medido en \textit{benchmarks}) necesarios, mientras que la solución parcial sigue siendo equivalente.
+\item La familia de algoritmos \textit{TBID} logra un mejor desempeño para ciertos tableros (dependiendo de la cantidad de movimientos válidos para ambos jugadores), ya que la cantidad de movimientos posibles no es constante. Puede explorar más niveles en partidas cercanas a ser finales.
+\item El uso de iteradores y el uso del propio stack de la JVM mejora sustancialmente el desempeño y vale por el tiempo invertido en utilizar estas técnicas. Se desaconseja el uso de listas y mapas para código que es accedido regularmente (\textit{hotspots}). 
+\end{itemize}
+
+\newpage
 \section{Anexo}
+\subsection{Ejemplo de implementación del Solver en Python}
+Para cruzar datos con el código en Java y para generar los tableros al azar se implementó un script de Python que validara los movimientos. El mismo se encuentra en: https://gist.github.com/4018933
+
 \subsection{Implementación alternativa del núcleo del Solver}
+
+Se consideró una tercera implementación de \textit{Solvers}, basados en \textit{TBID} y particionamiento horizontal, en el cual levantara tantos \textit{workers} como núcleos disponibles en el equipo, cada uno con un nivel distinto. Cuando un \textit{terminara}, éste recibiría el siguiente nivel del grupo.
+
+En teoría, cada \textit{worker} se ejecutaría en un núcleo distinto con distintos niveles. Por lo tanto, en una máquina de 8 núcleos, podría explorar desde el nivel 1 a 8 y lograr una profundidad igual o mayor que \textit{TBID} para el mismo tiempo, ya que no arrastraría el tiempo de ejecución de niveles anteriores (para los primeros 8 niveles).
+
+Esta solución se descartó dado que la complejidad inherente del mismo, si bien no muy distinta a la de \textit{TBID}, no traía mejoras considerables fuera de los primeros pasos.
+
 \begin{thebibliography}{9}
   % type bibliography here
   \bibitem[BBS]{bbs} \emph{A framework for the unification of the behavioral sciences}, Herbert Gintis, Behavioral and Brain Sciences (2007) 30:1-61
